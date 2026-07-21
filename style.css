@@ -1293,3 +1293,27 @@
     }
 
 }
+/* ===== Module 1: Nút Đặt ngay ===== */
+
+.menu-order-btn{
+    display:block;
+    margin-top:15px;
+    padding:12px;
+    text-align:center;
+    background:#8B4513;
+    color:#fff;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:600;
+    transition:.3s;
+    cursor:pointer;
+}
+
+.menu-order-btn:hover{
+    background:#A0522D;
+    transform:translateY(-2px);
+}
+
+.menu-order-btn:active{
+    transform:scale(.98);
+}
