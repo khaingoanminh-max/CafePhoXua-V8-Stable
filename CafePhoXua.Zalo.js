@@ -75,3 +75,53 @@ CafePhoXuaZalo.Builder.buildUrl = function (baseUrl, message) {
     return baseUrl + separator + "text=" + message;
 
 };
+/**
+ * =====================================================
+ * Configuration
+ * -----------------------------------------------------
+ * Cấu hình mặc định của Zalo Connector.
+ *
+ * Chỉ lưu các thông tin cố định của quán.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.Config = {
+
+    /**
+     * Số điện thoại Zalo của quán
+     */
+    phone: "0868708799",
+
+    /**
+     * Đường dẫn Zalo chính thức
+     */
+    baseUrl: "https://zalo.me/0868708799"
+
+};
+/**
+ * =====================================================
+ * Send
+ * -----------------------------------------------------
+ * Mở Zalo với nội dung đơn hàng.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.send = function (message) {
+
+    const url = CafePhoXuaZalo.Builder.buildUrl(
+
+        CafePhoXuaZalo.Config.baseUrl,
+
+        message
+
+    );
+
+    if (!url) {
+        return false;
+    }
+
+    window.open(url, "_blank");
+
+    return true;
+
+};
