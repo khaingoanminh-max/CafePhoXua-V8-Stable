@@ -187,3 +187,59 @@ CafePhoXuaCheckout.Actions.collectOrder = function () {
     );
 
 };
+/**
+ * =====================================================
+ * Send Order
+ * -----------------------------------------------------
+ * Điều phối toàn bộ quy trình gửi đơn hàng.
+ *
+ * Quy trình:
+ * 1. Thu thập dữ liệu đơn hàng
+ * 2. Tạo nội dung đơn hàng
+ * 3. Gửi sang Zalo
+ *
+ * Trả về:
+ * true  - Gửi thành công
+ * false - Gửi thất bại
+ * =====================================================
+ */
+
+CafePhoXuaCheckout.Actions.sendOrder = function () {
+
+    const order =
+        CafePhoXuaCheckout.Actions.collectOrder();
+
+    const message =
+        CafePhoXuaOrderBuilder.Builder.buildOrderMessage(order);
+
+    return CafePhoXuaZalo.send(message);
+
+};
+/**
+ * =====================================================
+ * Bind Send Button
+ * -----------------------------------------------------
+ * Gắn sự kiện cho nút "Gửi đơn qua Zalo".
+ *
+ * Khi người dùng nhấn nút:
+ * - Gọi Checkout.Actions.sendOrder()
+ * =====================================================
+ */
+
+CafePhoXuaCheckout.Events.bindSendButton = function () {
+
+    const button = document.getElementById("sendOrderButton");
+
+    if (!button) {
+        return false;
+    }
+
+    button.addEventListener("click", function () {
+
+        CafePhoXuaCheckout.Actions.sendOrder();
+
+    });
+
+    return true;
+
+};
