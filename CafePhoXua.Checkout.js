@@ -228,7 +228,7 @@ CafePhoXuaCheckout.Actions.sendOrder = function () {
 
 CafePhoXuaCheckout.Events.bindSendButton = function () {
 
-    const button = document.getElementById("sendOrderButton");
+    const button = document.getElementById("btnSendZaloOrder");
 
     if (!button) {
         return false;
@@ -241,5 +241,21 @@ CafePhoXuaCheckout.Events.bindSendButton = function () {
     });
 
     return true;
+
+};
+/**
+ * =====================================================
+ * Initialize Checkout
+ * -----------------------------------------------------
+ * Khởi tạo toàn bộ Checkout Module.
+ *
+ * Chức năng:
+ * - Gắn các sự kiện của Checkout
+ * =====================================================
+ */
+
+CafePhoXuaCheckout.init = function () {
+
+    CafePhoXuaCheckout.Events.bindSendButton();
 
 };
