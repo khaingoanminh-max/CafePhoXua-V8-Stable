@@ -17,3 +17,61 @@
  */
 
 const CafePhoXuaZalo = {};
+/**
+ * =====================================================
+ * Utilities
+ * -----------------------------------------------------
+ * Chứa các hàm tiện ích dùng trong Zalo Connector.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.Utils = {};
+
+/**
+ * =====================================================
+ * Builder
+ * -----------------------------------------------------
+ * Chịu trách nhiệm tạo URL Zalo.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.Builder = {};
+/**
+ * =====================================================
+ * Encode Message
+ * -----------------------------------------------------
+ * Mã hóa nội dung đơn hàng để sử dụng trong URL Zalo.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.Utils.encodeMessage = function (message) {
+
+    message = String(message || "");
+
+    return encodeURIComponent(message);
+
+};
+/**
+ * =====================================================
+ * Build URL
+ * -----------------------------------------------------
+ * Tạo URL Zalo hoàn chỉnh từ đường link gốc và nội dung
+ * đã được mã hóa.
+ * =====================================================
+ */
+
+CafePhoXuaZalo.Builder.buildUrl = function (baseUrl, message) {
+
+    baseUrl = String(baseUrl || "").trim();
+
+    message = CafePhoXuaZalo.Utils.encodeMessage(message);
+
+    if (!baseUrl) {
+        return "";
+    }
+
+    const separator = baseUrl.includes("?") ? "&" : "?";
+
+    return baseUrl + separator + "text=" + message;
+
+};
