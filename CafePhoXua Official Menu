@@ -1,1 +1,1308 @@
+# ☕ CafePhoXua Official Menu 2026
 
+> Official Documentation for CafePhoXua V8 Stable
+
+---
+
+# Project
+
+CafePhoXua Official Menu 2026 là bộ dữ liệu menu chính thức của dự án CafePhoXua V8 Stable.
+
+Mục tiêu:
+
+- Chuẩn hóa toàn bộ 43 món.
+- Chuẩn hóa hình ảnh.
+- Chuẩn hóa tên file.
+- Chuẩn hóa mô tả.
+- Chuẩn hóa giá.
+- Không thay đổi kiến trúc V8 Stable.
+
+---
+
+# Quy tắc dự án
+
+✔ Không sửa kiến trúc hệ thống.
+
+✔ Không thay đổi luồng:
+
+Menu
+→ Đặt ngay
+→ Giỏ hàng
+→ Thanh toán
+→ Zalo
+
+✔ Chỉ bổ sung dữ liệu menu.
+
+✔ Ảnh chỉ cần đúng tên file sẽ tự hiển thị.
+
+---
+
+# Tiến độ
+
+## Giai đoạn 1
+
+✅ Danh sách 43 món
+
+## Giai đoạn 2
+
+⬜ Chuẩn hóa dữ liệu
+
+## Giai đoạn 3
+
+⬜ Chuẩn hóa ảnh
+
+## Giai đoạn 4
+
+⬜ Tích hợp V8 Stable
+
+## Giai đoạn 5
+
+⬜ Kiểm thử
+
+---
+
+# Danh mục
+
+☕ Cà phê (9)
+
+🍵 Matcha (1)
+
+🧋 Trà sữa (1)
+
+🍋 Trà (7)
+
+🥤 Soda (3)
+
+🥭 Sinh tố (3)
+
+🥑 Dằm (3)
+
+🧃 Nước ép & Giải khát (3)
+
+🍫 Đồ uống khác (2)
+
+🥫 Nước ngọt (10)
+
+💧 Nước (1)
+
+---
+
+Tổng cộng:
+
+# 43 Món
+# ===================================================================
+# MENU MASTER v1.0
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+| ID | Danh mục | Tên món | Ảnh | Giá | Mô tả | Trạng thái |
+|----|----------|---------|------|------|--------|-----------|
+| CF001 | Cafe | Cafe Đen Nóng | coffee-den-hot.jpg | ⬜ | ⬜ | Ready |
+| CF002 | Cafe | Cafe Đen Đá | coffee-den-ice.jpg | ⬜ | ⬜ | Ready |
+| CF003 | Cafe | Cafe Sữa Nóng | coffee-milk-hot.jpg | ⬜ | ⬜ | Ready |
+| CF004 | Cafe | Cafe Sữa Đá | coffee-milk-ice.jpg | ⬜ | ⬜ | Ready |
+| CF005 | Cafe | Bạc Xỉu | bac-xiu-hot.jpg | ⬜ | ⬜ | Ready |
+| CF006 | Cafe | Bạc Xỉu Đá | bac-xiu-ice.jpg | ⬜ | ⬜ | Ready |
+| CF007 | Cafe | Cafe Muối | coffee-salt.jpg | ⬜ | ⬜ | Ready |
+| CF008 | Cafe | Cafe Pha Máy Đen Nóng | espresso.jpg | ⬜ | ⬜ | Ready |
+| CF009 | Cafe | Cafe Pha Máy Sữa Nóng | latte-hot.jpg | ⬜ | ⬜ | Ready |
+| MT001 | Matcha | Matcha Latte | matcha-latte.jpg | ⬜ | ⬜ | Ready |
+| TS001 | Trà Sữa | Trà Sữa Oolong | oolong-milk-tea.jpg | ⬜ | ⬜ | Ready |
+| TR001 | Trà | Trà Tắc | tra-tac.jpg | ⬜ | ⬜ | Ready |
+| TR002 | Trà | Trà Chanh | tra-chanh.jpg | ⬜ | ⬜ | Ready |
+| TR003 | Trà | Trà Đào | tra-dao.jpg | ⬜ | ⬜ | Ready |
+| TR004 | Trà | Trà Vải | tra-vai.jpg | ⬜ | ⬜ | Ready |
+| TR005 | Trà | Trà Dâu | tra-dau.jpg | ⬜ | ⬜ | Ready |
+| TR006 | Trà | Trà Sen | tra-sen.jpg | ⬜ | ⬜ | Ready |
+| TR007 | Trà | Trà Đường | tra-duong.jpg | ⬜ | ⬜ | Ready |
+| SD001 | Soda | Soda Chanh | soda-chanh.jpg | ⬜ | ⬜ | Ready |
+| SD002 | Soda | Soda Việt Quất | soda-viet-quat.jpg | ⬜ | ⬜ | Ready |
+| SD003 | Soda | Soda Dâu | soda-dau.jpg | ⬜ | ⬜ | Ready |
+| ST001 | Sinh Tố | Sinh Tố Bơ | smoothie-avocado.jpg | ⬜ | ⬜ | Ready |
+| ST002 | Sinh Tố | Sinh Tố Xoài | smoothie-mango.jpg | ⬜ | ⬜ | Ready |
+| ST003 | Sinh Tố | Sinh Tố Dâu | smoothie-strawberry.jpg | ⬜ | ⬜ | Ready |
+| DD001 | Dằm | Bơ Dằm | bo-dam.jpg | ⬜ | ⬜ | Ready |
+| DD002 | Dằm | Sữa Chua Dằm | sua-chua-dam.jpg | ⬜ | ⬜ | Ready |
+| DD003 | Dằm | Việt Quất Dằm | viet-quat-dam.jpg | ⬜ | ⬜ | Ready |
+| NE001 | Nước Ép | Cam Vắt | orange-juice.jpg | ⬜ | ⬜ | Ready |
+| NE002 | Nước Ép | Nước Ép Dứa | pineapple-juice.jpg | ⬜ | ⬜ | Ready |
+| NE003 | Giải Khát | Đá Me | da-me.jpg | ⬜ | ⬜ | Ready |
+| DK001 | Khác | Ca Cao | cacao.jpg | ⬜ | ⬜ | Ready |
+| DK002 | Khác | Khoai Môn | khoai-mon.jpg | ⬜ | ⬜ | Ready |
+| NG001 | Nước Ngọt | Pepsi | pepsi.jpg | ⬜ | ⬜ | Ready |
+| NG002 | Nước Ngọt | Coca-Cola | coca-cola.jpg | ⬜ | ⬜ | Ready |
+| NG003 | Nước Ngọt | Bò Húc | bo-huc.jpg | ⬜ | ⬜ | Ready |
+| NG004 | Nước Ngọt | Sprite | sprite.jpg | ⬜ | ⬜ | Ready |
+| NG005 | Nước Ngọt | 7 Up | 7up.jpg | ⬜ | ⬜ | Ready |
+| NG006 | Nước Ngọt | Mirinda Cam | mirinda-cam.jpg | ⬜ | ⬜ | Ready |
+| NG007 | Nước Ngọt | Mirinda Xá Xị | mirinda-xa-xi.jpg | ⬜ | ⬜ | Ready |
+| NG008 | Nước Ngọt | Sting Dâu | sting-dau.jpg | ⬜ | ⬜ | Ready |
+| NG009 | Nước Ngọt | Sting Vàng | sting-vang.jpg | ⬜ | ⬜ | Ready |
+| NG010 | Nước Ngọt | Revive | revive.jpg | ⬜ | ⬜ | Ready |
+| NC001 | Nước | Nước Lọc | nuoc-loc.jpg | ⬜ | ⬜ | Ready |
+
+---
+
+## Trạng thái Menu Master
+
+- Tổng số món: **43**
+- Hoàn thành danh sách: ✅
+- Giá bán: ⬜ Chưa cập nhật
+- Mô tả: ⬜ Chưa cập nhật
+- Ảnh sản phẩm: ⬜ Đang bổ sung
+- Tích hợp Website: ⬜ Chưa thực hiện
+# ===================================================================
+# IMAGE NAMING STANDARD
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+## Mục tiêu
+
+Chuẩn hóa toàn bộ hình ảnh sản phẩm để hệ thống CafePhoXua V8 Stable có thể sử dụng ổn định và dễ bảo trì.
+
+---
+
+# Quy tắc đặt tên
+
+✔ Chữ thường (lowercase)
+
+✔ Không dấu
+
+✔ Không khoảng trắng
+
+✔ Dùng dấu gạch ngang (-)
+
+✔ Định dạng .jpg
+
+Ví dụ đúng
+
+coffee-den-hot.jpg
+
+coffee-den-ice.jpg
+
+coffee-milk-hot.jpg
+
+coffee-milk-ice.jpg
+
+bac-xiu-hot.jpg
+
+matcha-latte.jpg
+
+tra-dao.jpg
+
+soda-dau.jpg
+
+pepsi.jpg
+
+nuoc-loc.jpg
+
+---
+
+Ví dụ sai
+
+Cafe Đen Đá.JPG
+
+CafeSuaDa.png
+
+coffee den da.jpg
+
+Ảnh 01.jpg
+
+image123.jpg
+
+IMG_4567.JPG
+
+---
+
+# Quy tắc thư mục
+
+/images/
+
+Toàn bộ hình ảnh sản phẩm được lưu trong thư mục:
+
+images/
+
+Không tạo thư mục con.
+
+---
+
+# Định dạng
+
+Định dạng chuẩn:
+
+JPG (.jpg)
+
+Không sử dụng:
+
+PNG
+
+WEBP
+
+GIF
+
+BMP
+
+---
+
+# Kích thước
+
+Khuyến nghị:
+
+1000 × 1000 px
+
+Cho phép:
+
+800 × 800 px
+
+1200 × 1200 px
+
+---
+
+# Tỷ lệ
+
+1 : 1
+
+Ảnh vuông.
+
+---
+
+# Nền ảnh
+
+Ưu tiên:
+
+Nền trắng
+
+Hoặc
+
+Nền đồng nhất
+
+Không sử dụng:
+
+Ảnh nhiều vật thể
+
+Ảnh bị nghiêng
+
+Ảnh có watermark
+
+Ảnh có chữ
+
+---
+
+# Góc chụp
+
+Khuyến nghị:
+
+45°
+
+Hoặc
+
+Chính diện
+
+Sản phẩm nằm giữa ảnh.
+
+---
+
+# Chất lượng
+
+Ảnh rõ nét.
+
+Không mờ.
+
+Không rung.
+
+Không vỡ hình.
+
+---
+
+# Quy tắc thay ảnh
+
+Nếu cần thay ảnh sản phẩm:
+
+Giữ nguyên tên file.
+
+Ví dụ:
+
+coffee-den-ice.jpg
+
+Chỉ ghi đè ảnh mới.
+
+Không cần sửa mã nguồn.
+
+Không cần sửa menu.
+
+Không cần sửa menu.json.
+
+---
+
+# Danh sách tên file chuẩn
+
+## Cafe
+
+coffee-den-hot.jpg
+
+coffee-den-ice.jpg
+
+coffee-milk-hot.jpg
+
+coffee-milk-ice.jpg
+
+bac-xiu-hot.jpg
+
+bac-xiu-ice.jpg
+
+coffee-salt.jpg
+
+espresso.jpg
+
+latte-hot.jpg
+
+## Matcha
+
+matcha-latte.jpg
+
+## Trà sữa
+
+oolong-milk-tea.jpg
+
+## Trà
+
+tra-tac.jpg
+
+tra-chanh.jpg
+
+tra-dao.jpg
+
+tra-vai.jpg
+
+tra-dau.jpg
+
+tra-sen.jpg
+
+tra-duong.jpg
+
+## Soda
+
+soda-chanh.jpg
+
+soda-viet-quat.jpg
+
+soda-dau.jpg
+
+## Sinh tố
+
+smoothie-avocado.jpg
+
+smoothie-mango.jpg
+
+smoothie-strawberry.jpg
+
+## Dằm
+
+bo-dam.jpg
+
+sua-chua-dam.jpg
+
+viet-quat-dam.jpg
+
+## Nước ép & Giải khát
+
+orange-juice.jpg
+
+pineapple-juice.jpg
+
+da-me.jpg
+
+## Đồ uống khác
+
+cacao.jpg
+
+khoai-mon.jpg
+
+## Nước ngọt
+
+pepsi.jpg
+
+coca-cola.jpg
+
+bo-huc.jpg
+
+sprite.jpg
+
+7up.jpg
+
+mirinda-cam.jpg
+
+mirinda-xa-xi.jpg
+
+sting-dau.jpg
+
+sting-vang.jpg
+
+revive.jpg
+
+## Nước
+
+nuoc-loc.jpg
+
+---
+
+# Phiên bản
+
+Image Naming Standard v1.0
+
+Status:
+
+Approved
+# ===================================================================
+# DESCRIPTION STANDARD
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+## Mục tiêu
+
+Chuẩn hóa mô tả của toàn bộ sản phẩm trong CafePhoXua Official Menu 2026.
+
+Mỗi sản phẩm phải có phần mô tả ngắn gọn, rõ ràng và thống nhất để sử dụng trên:
+
+- Website
+- Menu điện tử
+- Giỏ hàng
+- Thanh toán
+- Zalo
+- Tài liệu nội bộ
+
+---
+
+# Nguyên tắc
+
+✔ Ngắn gọn
+
+✔ Dễ hiểu
+
+✔ Thống nhất
+
+✔ Không quảng cáo quá mức
+
+✔ Không dùng ký tự đặc biệt
+
+✔ Không viết HOA toàn bộ
+
+---
+
+# Độ dài
+
+Khuyến nghị:
+
+15–30 từ
+
+Không vượt quá:
+
+40 từ
+
+---
+
+# Cấu trúc
+
+Mỗi mô tả gồm:
+
+1. Thành phần chính
+2. Hương vị
+3. Cảm nhận
+
+Ví dụ:
+
+"Cà phê rang xay nguyên chất, hương vị đậm đà, phù hợp cho người yêu thích cà phê truyền thống."
+
+---
+
+# Không sử dụng
+
+❌ Ngon nhất
+
+❌ Số 1
+
+❌ Tuyệt đối
+
+❌ 100% ngon
+
+❌ Độc quyền
+
+❌ Cam kết
+
+❌ Bảo đảm
+
+---
+
+# Phong cách
+
+Giọng văn:
+
+- Thân thiện
+- Chuyên nghiệp
+- Dễ đọc
+- Trung lập
+
+---
+
+# Quy tắc dấu câu
+
+Kết thúc bằng dấu chấm (.)
+
+Ví dụ:
+
+"Cà phê rang xay nguyên chất, hương vị đậm đà."
+
+---
+
+# Ví dụ theo danh mục
+
+## Cafe
+
+"Cà phê rang xay nguyên chất, hương vị đậm đà và thơm đặc trưng."
+
+---
+
+## Matcha
+
+"Matcha hòa quyện cùng sữa, vị béo nhẹ và hương trà xanh thanh mát."
+
+---
+
+## Trà sữa
+
+"Trà Oolong kết hợp sữa, hương thơm dịu và vị ngọt cân bằng."
+
+---
+
+## Trà
+
+"Trà pha cùng trái cây, hương vị thanh mát và dễ uống."
+
+---
+
+## Soda
+
+"Soda kết hợp siro trái cây, vị mát lạnh và sảng khoái."
+
+---
+
+## Sinh tố
+
+"Trái cây tươi xay cùng sữa, kết cấu mịn và vị ngọt tự nhiên."
+
+---
+
+## Dằm
+
+"Nguyên liệu tươi kết hợp sữa và đá, tạo cảm giác béo mịn và hấp dẫn."
+
+---
+
+## Nước ép & Giải khát
+
+"Thức uống từ nguyên liệu tươi, giúp giải khát và mang hương vị tự nhiên."
+
+---
+
+## Đồ uống khác
+
+"Hương vị đặc trưng, phù hợp cho nhiều sở thích khác nhau."
+
+---
+
+## Nước ngọt
+
+"Nước giải khát đóng chai hoặc lon, dùng lạnh ngon hơn."
+
+---
+
+## Nước
+
+"Nước uống tinh khiết, thích hợp dùng kèm mọi loại đồ uống."
+
+---
+
+# Quy tắc cập nhật
+
+Khi thêm sản phẩm mới:
+
+✔ Viết mô tả theo đúng cấu trúc.
+
+✔ Không thay đổi phong cách chung.
+
+✔ Không viết dài hơn tiêu chuẩn.
+
+---
+
+# Kiểm tra chất lượng
+
+Mỗi mô tả phải đáp ứng:
+
+☑ Đúng chính tả
+
+☑ Có dấu tiếng Việt
+
+☑ Đúng danh mục
+
+☑ Không trùng lặp hoàn toàn với sản phẩm khác
+
+☑ Phù hợp với sản phẩm thực tế
+
+---
+
+# Phiên bản
+
+Description Standard v1.0
+
+Status:
+
+Approved
+# ===================================================================
+# PRICE STANDARD
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+## Mục tiêu
+
+Chuẩn hóa cách quản lý giá bán của toàn bộ sản phẩm trong CafePhoXua Official Menu 2026.
+
+Price Standard là nguồn dữ liệu chính thức được sử dụng cho:
+
+- Website
+- Menu điện tử
+- Giỏ hàng
+- Thanh toán
+- Zalo
+- Tài liệu nội bộ
+
+---
+
+# Nguyên tắc
+
+✔ Mỗi sản phẩm chỉ có một giá bán chính thức.
+
+✔ Giá được lưu dưới dạng số.
+
+✔ Website sẽ tự định dạng hiển thị.
+
+✔ Không lưu ký tự "đ" trong dữ liệu.
+
+✔ Không sử dụng dấu chấm hoặc dấu phẩy trong dữ liệu số.
+
+---
+
+# Định dạng dữ liệu
+
+Đúng
+
+25000
+
+30000
+
+45000
+
+Sai
+
+25.000đ
+
+25,000
+
+25k
+
+25.000 VNĐ
+
+---
+
+# Hiển thị trên Website
+
+Hệ thống sẽ tự chuyển:
+
+25000
+
+↓
+
+25.000đ
+
+Không nhập trực tiếp:
+
+25.000đ
+
+---
+
+# Đơn vị tiền
+
+Đơn vị chính thức:
+
+VNĐ
+
+Không sử dụng:
+
+$
+
+USD
+
+K
+
+---
+
+# Quy tắc cập nhật giá
+
+Nếu thay đổi giá:
+
+✔ Chỉ cập nhật tại Menu Master.
+
+✔ Không sửa trực tiếp trong giao diện.
+
+✔ Không sửa trong mã nguồn.
+
+✔ Không sửa trong giỏ hàng.
+
+✔ Không sửa trong Zalo.
+
+Hệ thống sẽ tự đồng bộ.
+
+---
+
+# Quy tắc làm tròn
+
+Khuyến nghị:
+
+Bội số 1.000 VNĐ.
+
+Ví dụ:
+
+25000
+
+29000
+
+30000
+
+35000
+
+40000
+
+---
+
+# Giá mặc định
+
+Khi tạo sản phẩm mới:
+
+price: 0
+
+Cho đến khi có giá chính thức.
+
+---
+
+# Kiểm tra dữ liệu
+
+Mỗi giá bán phải đáp ứng:
+
+☑ Là số nguyên.
+
+☑ Lớn hơn 0 (khi phát hành).
+
+☑ Không chứa ký tự.
+
+☑ Không có khoảng trắng.
+
+☑ Không có dấu phân cách hàng nghìn.
+
+---
+
+# Ví dụ
+
+Cafe Đen Đá
+
+price
+
+25000
+
+Website
+
+25.000đ
+
+---
+
+Matcha Latte
+
+price
+
+39000
+
+Website
+
+39.000đ
+
+---
+
+Pepsi
+
+price
+
+15000
+
+Website
+
+15.000đ
+
+---
+
+# Quy trình thay đổi giá
+
+1. Cập nhật Menu Master.
+
+2. Kiểm tra Price Standard.
+
+3. Đồng bộ menu.json.
+
+4. Kiểm thử Website.
+
+5. Phát hành.
+
+---
+
+# Lịch sử thay đổi
+
+Mỗi lần thay đổi giá phải ghi:
+
+Ngày
+
+Sản phẩm
+
+Giá cũ
+
+Giá mới
+
+Người cập nhật
+
+Lý do
+
+Ví dụ
+
+| Ngày | Sản phẩm | Giá cũ | Giá mới | Người cập nhật | Lý do |
+|------|----------|--------|----------|----------------|--------|
+| 2026-07-23 | Cafe Sữa Đá | 27000 | 29000 | Admin | Điều chỉnh chi phí nguyên liệu |
+
+---
+
+# Phiên bản
+
+Price Standard v1.0
+
+Status:
+
+Approved
+# ===================================================================
+# PRODUCT SPECIFICATION
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+## Mục tiêu
+
+Product Specification là tiêu chuẩn mô tả đầy đủ một sản phẩm trong hệ thống CafePhoXua.
+
+Mỗi sản phẩm phải tuân thủ cùng một cấu trúc dữ liệu để đảm bảo tính nhất quán trên toàn bộ hệ thống.
+
+Product Specification được sử dụng cho:
+
+- Website
+- Menu
+- Giỏ hàng
+- Thanh toán
+- Zalo
+- menu.json
+- Quản trị hệ thống
+
+---
+
+# Product Schema
+
+Mỗi sản phẩm phải có đầy đủ các trường sau.
+
+| Trường | Bắt buộc | Mô tả |
+|---------|:-------:|------|
+| id | ✅ | Mã sản phẩm duy nhất |
+| sku | ✅ | Mã quản lý nội bộ |
+| category | ✅ | Danh mục |
+| name | ✅ | Tên hiển thị |
+| slug | ✅ | Đường dẫn thân thiện |
+| price | ✅ | Giá bán |
+| currency | ✅ | Đơn vị tiền |
+| image | ✅ | Tên file ảnh |
+| description | ✅ | Mô tả ngắn |
+| status | ✅ | Trạng thái sản phẩm |
+| available | ✅ | Có thể bán |
+| featured | ✅ | Sản phẩm nổi bật |
+| sortOrder | ✅ | Thứ tự hiển thị |
+| createdAt | ✅ | Ngày tạo |
+| updatedAt | ✅ | Ngày cập nhật |
+
+---
+
+# Quy tắc
+
+## id
+
+Không được trùng.
+
+Ví dụ
+
+CF001
+
+TR004
+
+NG010
+
+---
+
+## sku
+
+Định dạng
+
+CFX-XXXX
+
+Ví dụ
+
+CFX-CF001
+
+CFX-TR005
+
+CFX-NG010
+
+---
+
+## category
+
+Chỉ được sử dụng các giá trị sau
+
+coffee
+
+matcha
+
+milk-tea
+
+tea
+
+soda
+
+smoothie
+
+dam
+
+juice
+
+other
+
+soft-drink
+
+water
+
+---
+
+## slug
+
+Viết thường.
+
+Không dấu.
+
+Dùng dấu "-".
+
+Ví dụ
+
+cafe-den-da
+
+tra-dao
+
+matcha-latte
+
+---
+
+## price
+
+Kiểu dữ liệu
+
+Number
+
+Ví dụ
+
+29000
+
+---
+
+## currency
+
+Luôn là
+
+VND
+
+---
+
+## image
+
+Tên file ảnh.
+
+Ví dụ
+
+coffee-den-ice.jpg
+
+---
+
+## description
+
+Theo Description Standard.
+
+---
+
+## status
+
+Chỉ sử dụng
+
+active
+
+inactive
+
+---
+
+## available
+
+true
+
+false
+
+---
+
+## featured
+
+true
+
+false
+
+---
+
+## sortOrder
+
+Bắt đầu từ
+
+1
+
+2
+
+3
+
+...
+
+43
+
+---
+
+# Ví dụ
+
+Cafe Đen Đá
+
+id
+
+CF002
+
+sku
+
+CFX-CF002
+
+category
+
+coffee
+
+name
+
+Cafe Đen Đá
+
+slug
+
+cafe-den-da
+
+price
+
+29000
+
+currency
+
+VND
+
+image
+
+coffee-den-ice.jpg
+
+description
+
+Cà phê rang xay nguyên chất, hương vị đậm đà và thơm đặc trưng.
+
+status
+
+active
+
+available
+
+true
+
+featured
+
+true
+
+sortOrder
+
+2
+
+createdAt
+
+2026-07-23
+
+updatedAt
+
+2026-07-23
+
+---
+
+# Quy trình thêm sản phẩm
+
+Bước 1
+
+Tạo ID
+
+↓
+
+Bước 2
+
+Tạo SKU
+
+↓
+
+Bước 3
+
+Đặt tên
+
+↓
+
+Bước 4
+
+Đặt slug
+
+↓
+
+Bước 5
+
+Đặt ảnh
+
+↓
+
+Bước 6
+
+Nhập giá
+
+↓
+
+Bước 7
+
+Viết mô tả
+
+↓
+
+Bước 8
+
+Kiểm tra dữ liệu
+
+↓
+
+Hoàn thành
+
+---
+
+# Checklist
+
+Một sản phẩm chỉ được phát hành khi:
+
+☑ Có ID
+
+☑ Có SKU
+
+☑ Có tên
+
+☑ Có slug
+
+☑ Có giá
+
+☑ Có ảnh
+
+☑ Có mô tả
+
+☑ Có danh mục
+
+☑ Có trạng thái
+
+☑ Có thứ tự hiển thị
+
+☑ Đã kiểm tra dữ liệu
+
+---
+
+# Phiên bản
+
+Product Specification v1.0
+
+Status:
+
+Approved
+# ===================================================================
+# PRODUCT DATABASE
+# CafePhoXua Official Menu 2026
+# ===================================================================
+
+## Mục tiêu
+
+Product Database là bảng dữ liệu chính thức của toàn bộ 43 sản phẩm.
+
+Đây là nguồn dữ liệu duy nhất (Single Source of Truth) được sử dụng để tạo:
+
+- menu.json
+- Website
+- Menu
+- Giỏ hàng
+- Thanh toán
+- Zalo
+
+Mọi thay đổi về sản phẩm phải được thực hiện tại Product Database trước khi đồng bộ sang các thành phần khác.
+
+---
+
+## Cấu trúc dữ liệu
+
+| ID | SKU | Category | Name | Slug | Price | Currency | Image | Description | Status | Available | Featured | Sort | Version |
+|----|-----|----------|------|------|------:|----------|-------|-------------|--------|-----------|-----------|-----:|---------|
+| CF001 | CFX-CF001 | coffee | Cafe Đen Nóng | cafe-den-nong | 0 | VND | coffee-den-hot.jpg | ⬜ | active | true | false | 1 | 1.0.0 |
+| CF002 | CFX-CF002 | coffee | Cafe Đen Đá | cafe-den-da | 0 | VND | coffee-den-ice.jpg | ⬜ | active | true | true | 2 | 1.0.0 |
+| CF003 | CFX-CF003 | coffee | Cafe Sữa Nóng | cafe-sua-nong | 0 | VND | coffee-milk-hot.jpg | ⬜ | active | true | false | 3 | 1.0.0 |
+| CF004 | CFX-CF004 | coffee | Cafe Sữa Đá | cafe-sua-da | 0 | VND | coffee-milk-ice.jpg | ⬜ | active | true | true | 4 | 1.0.0 |
+| CF005 | CFX-CF005 | coffee | Bạc Xỉu | bac-xiu | 0 | VND | bac-xiu-hot.jpg | ⬜ | active | true | false | 5 | 1.0.0 |
+| CF006 | CFX-CF006 | coffee | Bạc Xỉu Đá | bac-xiu-da | 0 | VND | bac-xiu-ice.jpg | ⬜ | active | true | false | 6 | 1.0.0 |
+| CF007 | CFX-CF007 | coffee | Cafe Muối | cafe-muoi | 0 | VND | coffee-salt.jpg | ⬜ | active | true | true | 7 | 1.0.0 |
+| CF008 | CFX-CF008 | coffee | Cafe Pha Máy Đen Nóng | cafe-pha-may-den-nong | 0 | VND | espresso.jpg | ⬜ | active | true | false | 8 | 1.0.0 |
+| CF009 | CFX-CF009 | coffee | Cafe Pha Máy Sữa Nóng | cafe-pha-may-sua-nong | 0 | VND | latte-hot.jpg | ⬜ | active | true | false | 9 | 1.0.0 |
+
+> **Các sản phẩm còn lại (MT001 → NC001) sẽ được bổ sung theo đúng cấu trúc này.**
+
+---
+
+## Quy tắc
+
+- Không sửa trực tiếp dữ liệu trên Website.
+- Không sửa trực tiếp trong giỏ hàng.
+- Không sửa trực tiếp trong menu.json.
+- Chỉ cập nhật tại Product Database.
+- Mọi hệ thống khác sẽ đồng bộ từ Product Database.
+
+---
+
+## Trạng thái
+
+- Tổng sản phẩm: **43**
+- Đã nhập: **9 / 43**
+- Còn lại: **34**
+- Phiên bản: **1.0.0**
