@@ -1306,3 +1306,899 @@ Mọi thay đổi về sản phẩm phải được thực hiện tại Product 
 - Đã nhập: **9 / 43**
 - Còn lại: **34**
 - Phiên bản: **1.0.0**
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-07-23",
+  "currency": "VND",
+  "products": [
+    {
+      "id": "CF001",
+      "sku": "CFX-CF001",
+      "category": "coffee",
+      "name": "Cafe Đen Nóng",
+      "slug": "cafe-den-nong",
+      "price": 0,
+      "image": "cafe-den-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 1
+    },
+    {
+      "id": "CF002",
+      "sku": "CFX-CF002",
+      "category": "coffee",
+      "name": "Cafe Đen Đá",
+      "slug": "cafe-den-da",
+      "price": 0,
+      "image": "cafe-den-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "CF003",
+      "sku": "CFX-CF003",
+      "category": "coffee",
+      "name": "Cafe Sữa Nóng",
+      "slug": "cafe-sua-nong",
+      "price": 0,
+      "image": "cafe-sua-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 3
+    },
+    {
+      "id": "CF004",
+      "sku": "CFX-CF004",
+      "category": "coffee",
+      "name": "Cafe Sữa Đá",
+      "slug": "cafe-sua-da",
+      "price": 0,
+      "image": "cafe-sua-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 4
+    },
+    {
+      "id": "CF005",
+      "sku": "CFX-CF005",
+      "category": "coffee",
+      "name": "Bạc Xỉu",
+      "slug": "bac-xiu",
+      "price": 0,
+      "image": "bac-xiu.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 5
+    },
+    {
+      "id": "CF006",
+      "sku": "CFX-CF006",
+      "category": "coffee",
+      "name": "Bạc Xỉu Đá",
+      "slug": "bac-xiu-da",
+      "price": 0,
+      "image": "bac-xiu-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 6
+    },
+    {
+      "id": "CF007",
+      "sku": "CFX-CF007",
+      "category": "coffee",
+      "name": "Cafe Muối",
+      "slug": "cafe-muoi",
+      "price": 0,
+      "image": "cafe-muoi.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 7
+    },
+    {
+      "id": "CF008",
+      "sku": "CFX-CF008",
+      "category": "coffee",
+      "name": "Cafe Pha Máy Đen Nóng",
+      "slug": "cafe-pha-may-den-nong",
+      "price": 0,
+      "image": "cafe-pha-may-den-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 8
+    },
+    {
+      "id": "CF009",
+      "sku": "CFX-CF009",
+      "category": "coffee",
+      "name": "Cafe Pha Máy Sữa Nóng",
+      "slug": "cafe-pha-may-sua-nong",
+      "price": 0,
+      "image": "cafe-pha-may-sua-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 9
+    }
+  ]
+}
+// ===================================================================
+// CafePhoXua Official Menu 2026
+// File: src/types/menu.ts
+// Description: Product Type Definitions
+// Version: 1.0.0
+// ===================================================================
+
+/**
+ * Danh mục sản phẩm
+ */
+export type ProductCategory =
+  | "coffee"
+  | "matcha"
+  | "milk-tea"
+  | "tea"
+  | "soda"
+  | "smoothie"
+  | "dam"
+  | "juice"
+  | "other"
+  | "soft-drink"
+  | "water";
+
+/**
+ * Trạng thái sản phẩm
+ */
+export type ProductStatus = "active" | "inactive";
+
+/**
+ * Đơn vị tiền tệ
+ */
+export type Currency = "VND";
+
+/**
+ * Thông tin một sản phẩm
+ */
+export interface Product {
+  /** Mã sản phẩm */
+  id: string;
+
+  /** Mã quản lý nội bộ */
+  sku: string;
+
+  /** Danh mục */
+  category: ProductCategory;
+
+  /** Tên hiển thị */
+  name: string;
+
+  /** Đường dẫn thân thiện */
+  slug: string;
+
+  /** Giá bán */
+  price: number;
+
+  /** Tiền tệ */
+  currency: Currency;
+
+  /** Tên file ảnh */
+  image: string;
+
+  /** Mô tả ngắn */
+  description: string;
+
+  /** Trạng thái */
+  status: ProductStatus;
+
+  /** Có thể bán */
+  available: boolean;
+
+  /** Sản phẩm nổi bật */
+  featured: boolean;
+
+  /** Thứ tự hiển thị */
+  sortOrder: number;
+
+  /** Phiên bản dữ liệu */
+  version: string;
+}
+
+/**
+ * Cơ sở dữ liệu menu
+ */
+export interface MenuDatabase {
+  /** Phiên bản menu */
+  version: string;
+
+  /** Ngày cập nhật */
+  updatedAt: string;
+
+  /** Đơn vị tiền */
+  currency: Currency;
+
+  /** Danh sách sản phẩm */
+  products: Product[];
+}
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-07-23",
+  "currency": "VND",
+  "products": [
+    {
+      "id": "CF001",
+      "sku": "CFX-CF001",
+      "category": "coffee",
+      "name": "Cafe Đen Nóng",
+      "slug": "cafe-den-nong",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-den-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 1,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF002",
+      "sku": "CFX-CF002",
+      "category": "coffee",
+      "name": "Cafe Đen Đá",
+      "slug": "cafe-den-da",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-den-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 2,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF003",
+      "sku": "CFX-CF003",
+      "category": "coffee",
+      "name": "Cafe Sữa Nóng",
+      "slug": "cafe-sua-nong",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-sua-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 3,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF004",
+      "sku": "CFX-CF004",
+      "category": "coffee",
+      "name": "Cafe Sữa Đá",
+      "slug": "cafe-sua-da",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-sua-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 4,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF005",
+      "sku": "CFX-CF005",
+      "category": "coffee",
+      "name": "Bạc Xỉu",
+      "slug": "bac-xiu",
+      "price": 0,
+      "currency": "VND",
+      "image": "bac-xiu.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 5,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF006",
+      "sku": "CFX-CF006",
+      "category": "coffee",
+      "name": "Bạc Xỉu Đá",
+      "slug": "bac-xiu-da",
+      "price": 0,
+      "currency": "VND",
+      "image": "bac-xiu-da.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 6,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF007",
+      "sku": "CFX-CF007",
+      "category": "coffee",
+      "name": "Cafe Muối",
+      "slug": "cafe-muoi",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-muoi.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 7,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF008",
+      "sku": "CFX-CF008",
+      "category": "coffee",
+      "name": "Cafe Pha Máy Đen Nóng",
+      "slug": "cafe-pha-may-den-nong",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-pha-may-den-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 8,
+      "version": "1.0.0"
+    },
+    {
+      "id": "CF009",
+      "sku": "CFX-CF009",
+      "category": "coffee",
+      "name": "Cafe Pha Máy Sữa Nóng",
+      "slug": "cafe-pha-may-sua-nong",
+      "price": 0,
+      "currency": "VND",
+      "image": "cafe-pha-may-sua-nong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 9,
+      "version": "1.0.0"
+    }
+  ]
+}
+,
+    {
+      "id": "MT001",
+      "sku": "CFX-MT001",
+      "category": "matcha",
+      "name": "Matcha Latte",
+      "slug": "matcha-latte",
+      "price": 0,
+      "image": "matcha-latte.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 10,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TS001",
+      "sku": "CFX-TS001",
+      "category": "milk-tea",
+      "name": "Trà Sữa Oolong",
+      "slug": "tra-sua-oolong",
+      "price": 0,
+      "image": "tra-sua-oolong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 11,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR001",
+      "sku": "CFX-TR001",
+      "category": "tea",
+      "name": "Trà Tắc",
+      "slug": "tra-tac",
+      "price": 0,
+      "image": "tra-tac.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 12,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR002",
+      "sku": "CFX-TR002",
+      "category": "tea",
+      "name": "Trà Chanh",
+      "slug": "tra-chanh",
+      "price": 0,
+      "image": "tra-chanh.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 13,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR003",
+      "sku": "CFX-TR003",
+      "category": "tea",
+      "name": "Trà Đào",
+      "slug": "tra-dao",
+      "price": 0,
+      "image": "tra-dao.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 14,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR004",
+      "sku": "CFX-TR004",
+      "category": "tea",
+      "name": "Trà Vải",
+      "slug": "tra-vai",
+      "price": 0,
+      "image": "tra-vai.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 15,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR005",
+      "sku": "CFX-TR005",
+      "category": "tea",
+      "name": "Trà Dâu",
+      "slug": "tra-dau",
+      "price": 0,
+      "image": "tra-dau.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 16,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR006",
+      "sku": "CFX-TR006",
+      "category": "tea",
+      "name": "Trà Sen",
+      "slug": "tra-sen",
+      "price": 0,
+      "image": "tra-sen.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 17,
+      "version": "1.0.0"
+    },
+    {
+      "id": "TR007",
+      "sku": "CFX-TR007",
+      "category": "tea",
+      "name": "Trà Đường",
+      "slug": "tra-duong",
+      "price": 0,
+      "image": "tra-duong.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 18,
+      "version": "1.0.0"
+    }
+,
+    {
+      "id": "SD001",
+      "sku": "CFX-SD001",
+      "category": "soda",
+      "name": "Soda Chanh",
+      "slug": "soda-chanh",
+      "price": 0,
+      "image": "soda-chanh.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 19,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SD002",
+      "sku": "CFX-SD002",
+      "category": "soda",
+      "name": "Soda Việt Quất",
+      "slug": "soda-viet-quat",
+      "price": 0,
+      "image": "soda-viet-quat.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 20,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SD003",
+      "sku": "CFX-SD003",
+      "category": "soda",
+      "name": "Soda Dâu",
+      "slug": "soda-dau",
+      "price": 0,
+      "image": "soda-dau.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 21,
+      "version": "1.0.0"
+    },
+    {
+      "id": "ST001",
+      "sku": "CFX-ST001",
+      "category": "smoothie",
+      "name": "Sinh Tố Bơ",
+      "slug": "sinh-to-bo",
+      "price": 0,
+      "image": "sinh-to-bo.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 22,
+      "version": "1.0.0"
+    },
+    {
+      "id": "ST002",
+      "sku": "CFX-ST002",
+      "category": "smoothie",
+      "name": "Sinh Tố Xoài",
+      "slug": "sinh-to-xoai",
+      "price": 0,
+      "image": "sinh-to-xoai.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 23,
+      "version": "1.0.0"
+    },
+    {
+      "id": "ST003",
+      "sku": "CFX-ST003",
+      "category": "smoothie",
+      "name": "Sinh Tố Dâu",
+      "slug": "sinh-to-dau",
+      "price": 0,
+      "image": "sinh-to-dau.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 24,
+      "version": "1.0.0"
+    },
+    {
+      "id": "DM001",
+      "sku": "CFX-DM001",
+      "category": "dam",
+      "name": "Bơ Dằm",
+      "slug": "bo-dam",
+      "price": 0,
+      "image": "bo-dam.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 25,
+      "version": "1.0.0"
+    },
+    {
+      "id": "DM002",
+      "sku": "CFX-DM002",
+      "category": "dam",
+      "name": "Sữa Chua Dằm",
+      "slug": "sua-chua-dam",
+      "price": 0,
+      "image": "sua-chua-dam.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 26,
+      "version": "1.0.0"
+    },
+    {
+      "id": "DM003",
+      "sku": "CFX-DM003",
+      "category": "dam",
+      "name": "Việt Quất Dằm",
+      "slug": "viet-quat-dam",
+      "price": 0,
+      "image": "viet-quat-dam.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 27,
+      "version": "1.0.0"
+    }
+,
+    {
+      "id": "JS001",
+      "sku": "CFX-JS001",
+      "category": "juice",
+      "name": "Cam Vắt",
+      "slug": "cam-vat",
+      "price": 0,
+      "image": "cam-vat.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 28,
+      "version": "1.0.0"
+    },
+    {
+      "id": "JS002",
+      "sku": "CFX-JS002",
+      "category": "juice",
+      "name": "Nước Ép Dứa",
+      "slug": "nuoc-ep-dua",
+      "price": 0,
+      "image": "nuoc-ep-dua.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 29,
+      "version": "1.0.0"
+    },
+    {
+      "id": "JS003",
+      "sku": "CFX-JS003",
+      "category": "juice",
+      "name": "Đá Me",
+      "slug": "da-me",
+      "price": 0,
+      "image": "da-me.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 30,
+      "version": "1.0.0"
+    },
+    {
+      "id": "OT001",
+      "sku": "CFX-OT001",
+      "category": "other",
+      "name": "Ca Cao",
+      "slug": "ca-cao",
+      "price": 0,
+      "image": "ca-cao.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 31,
+      "version": "1.0.0"
+    },
+    {
+      "id": "OT002",
+      "sku": "CFX-OT002",
+      "category": "other",
+      "name": "Khoai Môn",
+      "slug": "khoai-mon",
+      "price": 0,
+      "image": "khoai-mon.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 32,
+      "version": "1.0.0"
+    }
+,
+    {
+      "id": "SDR001",
+      "sku": "CFX-SDR001",
+      "category": "soft-drink",
+      "name": "Pepsi",
+      "slug": "pepsi",
+      "price": 0,
+      "image": "pepsi.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 33,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR002",
+      "sku": "CFX-SDR002",
+      "category": "soft-drink",
+      "name": "Coca-Cola",
+      "slug": "coca-cola",
+      "price": 0,
+      "image": "coca-cola.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 34,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR003",
+      "sku": "CFX-SDR003",
+      "category": "soft-drink",
+      "name": "Bò Húc",
+      "slug": "bo-huc",
+      "price": 0,
+      "image": "bo-huc.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": true,
+      "sortOrder": 35,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR004",
+      "sku": "CFX-SDR004",
+      "category": "soft-drink",
+      "name": "Sprite",
+      "slug": "sprite",
+      "price": 0,
+      "image": "sprite.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 36,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR005",
+      "sku": "CFX-SDR005",
+      "category": "soft-drink",
+      "name": "7 Up",
+      "slug": "7-up",
+      "price": 0,
+      "image": "7-up.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 37,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR006",
+      "sku": "CFX-SDR006",
+      "category": "soft-drink",
+      "name": "Mirinda Cam",
+      "slug": "mirinda-cam",
+      "price": 0,
+      "image": "mirinda-cam.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 38,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR007",
+      "sku": "CFX-SDR007",
+      "category": "soft-drink",
+      "name": "Mirinda Xá Xị",
+      "slug": "mirinda-xa-xi",
+      "price": 0,
+      "image": "mirinda-xa-xi.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 39,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR008",
+      "sku": "CFX-SDR008",
+      "category": "soft-drink",
+      "name": "Sting Dâu",
+      "slug": "sting-dau",
+      "price": 0,
+      "image": "sting-dau.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 40,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR009",
+      "sku": "CFX-SDR009",
+      "category": "soft-drink",
+      "name": "Sting Vàng",
+      "slug": "sting-vang",
+      "price": 0,
+      "image": "sting-vang.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 41,
+      "version": "1.0.0"
+    },
+    {
+      "id": "SDR010",
+      "sku": "CFX-SDR010",
+      "category": "soft-drink",
+      "name": "Revive",
+      "slug": "revive",
+      "price": 0,
+      "image": "revive.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 42,
+      "version": "1.0.0"
+    },
+    {
+      "id": "WT001",
+      "sku": "CFX-WT001",
+      "category": "water",
+      "name": "Nước Lọc",
+      "slug": "nuoc-loc",
+      "price": 0,
+      "image": "nuoc-loc.jpg",
+      "description": "",
+      "status": "active",
+      "available": true,
+      "featured": false,
+      "sortOrder": 43,
+      "version": "1.0.0"
+    }
+  ]
+}
