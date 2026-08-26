@@ -28,7 +28,7 @@ CafePhoXuaZalo.Utils.encodeMessage = function (message) {
 
 CafePhoXuaZalo.Builder.buildUrl = function (baseUrl, message) {
     baseUrl = String(baseUrl || "").trim();
-    message = CafePhoXuaZuaZalo.Utils.encodeMessage(message);
+    message = CafePhoXuaZalo.Utils.encodeMessage(message);
 
     if (!baseUrl) {
         return "";
