@@ -1,1108 +1,371 @@
-// =====================================================
-// CAFE PHỐ XƯA
-// VERSION 2.0 STABLE
-// BLOCK 01/10
-// KHỞI TẠO HỆ THỐNG
-// =====================================================
+/*!
+ * ==========================================================
+ * CafePhoXua - Application UI
+ * ==========================================================
+ * V8 Stable UI layer
+ *
+ * Responsibilities:
+ * - Load and render the official menu dataset
+ * - Connect UI actions to CafePhoXua.Cart
+ * - Persist V8 cart state
+ * - Render cart/payment summaries
+ * - Coordinate checkout UI
+ *
+ * This file does NOT own cart data.
+ * The single cart source of truth is CafePhoXua.Cart.
+ * ==========================================================
+ */
+(function (window, document) {
+    "use strict";
 
-// ---------------------------
-// Giỏ hàng
-// ---------------------------
-let cart = [];
+    const App = window.CafePhoXua;
+    const Cart = App?.Cart;
 
-// =====================================================
-// KẾT THÚC BLOCK 01
-// =====================================================
-// =====================================================
-// BLOCK 02/10
-// LẤY CÁC PHẦN TỬ HTML
-// =====================================================
-
-const cartIcon = document.getElementById("cart-icon");
-const cartPopup = document.getElementById("cart-popup");
-const cartItems = document.getElementById("cart-items");
-const cartCount = document.getElementById("cart-count");
-const cartTotal = document.getElementById("cart-total");
-const closeCart = document.getElementById("close-cart");
-
-const orderButtons = document.querySelectorAll(".menu-order-btn");
-
-// =====================================================
-// KẾT THÚC BLOCK 02
-// =====================================================
-// =====================================================
-// BLOCK 03/10
-// CẬP NHẬT SỐ LƯỢNG GIỎ HÀNG
-// =====================================================
-
-function updateCartCount() {
-
-    let total = 0;
-
-    for (const item of cart) {
-
-        total += item.quantity;
-
+    if (!App || !Cart) {
+        throw new Error("[CafePhoXua.UI] Core/Cart chưa được tải.");
     }
 
-    cartCount.textContent = total;
-
-}
-
-// =====================================================
-// KẾT THÚC BLOCK 03
-// =====================================================
-// =====================================================
-// BLOCK 04/10
-// TÍNH TỔNG TIỀN
-// =====================================================
-
-function calculateTotal() {
-
-    let total = 0;
-
-    for (const item of cart) {
-
-        total += item.price * item.quantity;
-
-    }
-
-    cartTotal.textContent = "Tổng tiền: " + total.toLocaleString() + "đ";
-
-}
-
-// =====================================================
-// KẾT THÚC BLOCK 04
-// =====================================================
-// =====================================================
-// BLOCK 05/10
-// HIỂN THỊ GIỎ HÀNG
-// =====================================================
-
-function renderCart() {
-
-    if (cart.length === 0) {
-
-        cartItems.innerHTML = `
-            <p style="text-align:center;padding:20px;">
-                Chưa có sản phẩm.
-            </p>
-        `;
-         cartTotal.textContent = "Tổng tiền: 0đ";
-
-        return;
-
-
-    }
-
-    let html = "";
-
-    for (const item of cart) {
-
-        html += `
-            <div class="cart-item">
-
-                <strong>${item.product}</strong><br>
-
-                <div class="cart-qty">
-
-                    <button
-                        class="minus-btn"
-                        data-product="${item.product}">
-                        −
-                    </button>
-
-                    <span>${item.quantity}</span>
-
-                    <button
-                        class="plus-btn"
-                        data-product="${item.product}">
-                        +
-                    </button>
-
-                </div>
-
-                <div>
-
-                    ${(item.price * item.quantity).toLocaleString()}đ
-
-                </div>
-
-            </div>
-
-            <hr>
-        `;
-
-    }
-
-    cartItems.innerHTML = html;
-
-}
-
-// =====================================================
-// KẾT THÚC BLOCK 05
-// =====================================================
-// =====================================================
-// BLOCK 06/10
-// MODULE GIỎ HÀNG
-// =====================================================
-
-// Cập nhật toàn bộ giao diện giỏ hàng
-function refreshCart() {
-
-    updateCartCount();
-    calculateTotal();
-    renderCart();
-    saveCart();
-
-}
-
-// Thêm sản phẩm vào giỏ
-function addToCart(product, price) {
-
-    const exist = cart.find(item => item.product === product);
-
-    if (exist) {
-
-        exist.quantity++;
-
-    } else {
-
-        cart.push({
-            product: product,
-            price: price,
-            quantity: 1
-        });
-
-    }
-
-    refreshCart();
-
-}
-
-// Gắn sự kiện cho các nút "Đặt ngay"
-orderButtons.forEach(button => {
-
-    button.addEventListener("click", function (e) {
-
-        e.preventDefault();
-
-        // Thêm sản phẩm
-        addToCart(
-            this.dataset.product,
-            Number(this.dataset.price)
-        );
-        // --------------------------
-// Hiệu ứng giỏ hàng
-// --------------------------
-cartIcon.classList.add("cart-bounce");
-
-setTimeout(function () {
-
-    cartIcon.classList.remove("cart-bounce");
-
-}, 400);
-
-        // --------------------------
-        // Hiệu ứng nút
-        // --------------------------
-
-        const btn = this;
-
-        // Tránh bấm liên tục
-        btn.disabled = true;
-
-        // Lưu giao diện cũ
-        const oldText = btn.innerHTML;
-        const oldColor = btn.style.backgroundColor;
-        const oldCursor = btn.style.cursor;
-
-        // Hiệu ứng thành công
-        btn.innerHTML = "✔ Đã thêm";
-        btn.style.backgroundColor = "#28a745";
-        btn.style.cursor = "default";
-
-        // Sau 1 giây trở lại bình thường
-        setTimeout(function () {
-
-            btn.innerHTML = oldText;
-            btn.style.backgroundColor = oldColor;
-            btn.style.cursor = oldCursor;
-            btn.disabled = false;
-
-        }, 1000);
-
-    });
-
-});
-
-// =====================================================
-// KẾT THÚC BLOCK 06
-// =====================================================
-// =====================================================
-// BLOCK 07/10
-// ĐIỀU CHỈNH SỐ LƯỢNG (+ / -)
-// =====================================================
-
-// ---------------------------
-// Tăng số lượng
-// ---------------------------
-document.addEventListener("click", function (e) {
-
-    if (!e.target.classList.contains("plus-btn")) {
-        return;
-    }
-
-    const product = e.target.dataset.product;
-
-    const item = cart.find(i => i.product === product);
-
-    if (!item) {
-        return;
-    }
-
-    item.quantity++;
-
-    refreshCart();
-
-});
-
-// ---------------------------
-// Giảm số lượng
-// ---------------------------
-document.addEventListener("click", function (e) {
-
-    if (!e.target.classList.contains("minus-btn")) {
-        return;
-    }
-
-    const product = e.target.dataset.product;
-
-    const index = cart.findIndex(i => i.product === product);
-
-    if (index === -1) {
-        return;
-    }
-
-    cart[index].quantity--;
-
-    // Nếu số lượng bằng 0 thì xóa khỏi giỏ
-    if (cart[index].quantity <= 0) {
-
-        cart.splice(index, 1);
-
-    }
-
-    refreshCart();
-
-});
-
-// =====================================================
-// KẾT THÚC BLOCK 07
-// =====================================================
-// =====================================================
-// BLOCK 08/10
-// QUẢN LÝ POPUP GIỎ HÀNG
-// =====================================================
-
-// ---------------------------
-// Mở giỏ hàng
-// ---------------------------
-cartIcon.addEventListener("click", function () {
-
-    cartPopup.style.display = "flex";
-
-});
-
-// ---------------------------
-// Đóng bằng nút "Đóng"
-// ---------------------------
-closeCart.addEventListener("click", function () {
-
-    cartPopup.style.display = "none";
-
-});
-
-// ---------------------------
-// Click nền tối để đóng
-// ---------------------------
-cartPopup.addEventListener("click", function (e) {
-
-    if (e.target === cartPopup) {
-
-        cartPopup.style.display = "none";
-
-    }
-
-});
-
-// =====================================================
-// KẾT THÚC BLOCK 08
-// =====================================================
-// =====================================================
-// BLOCK 09/10
-// KHỞI TẠO GIAO DIỆN
-// =====================================================
-
-// Khởi tạo toàn bộ giao diện
-
-loadCart();
-
-refreshCart();
-
-// =====================================================
-// KẾT THÚC BLOCK 09
-// =====================================================
-// =====================================================
-// BLOCK 10/10
-// KHỞI ĐỘNG HỆ THỐNG
-// =====================================================
-
-// Kiểm tra các phần tử quan trọng
-if (
-    !cartIcon ||
-    !cartPopup ||
-    !cartItems ||
-    !cartCount ||
-    !cartTotal ||
-    !closeCart
-) {
-
-    console.error("❌ Lỗi: Không tìm thấy phần tử HTML.");
-
-} else {
-
-    console.log("☕ Cafe Phố Xưa");
-    console.log("🚀 Version 2.0 Stable");
-    console.log("✅ READY");
-
-}
-
-// =====================================================
-// KẾT THÚC BLOCK 10
-// =====================================================
-// =====================================================
-// CAFE PHỐ XƯA
-// VERSION 3.0
-// BLOCK 03/10
-// LOCAL STORAGE MODULE - PHẦN A
-// =====================================================
-
-// ---------------------------
-// Lưu giỏ hàng
-// ---------------------------
-function saveCart() {
-
-    localStorage.setItem(
-        "cafePhoXuaCart",
-        JSON.stringify(cart)
-    );
-
-
-}
-// =====================================================
-// VERSION 3.0
-// BLOCK 03 - PHẦN C
-// KHÔI PHỤC GIỎ HÀNG
-// =====================================================
-
-function loadCart() {
-
-    const data = localStorage.getItem("cafePhoXuaCart");
-
-    if (!data) {
-
-        return;
-
-    }
-
-    try {
-
-        cart = JSON.parse(data);
-
-    } catch (error) {
-
-        console.error("Không thể đọc dữ liệu giỏ hàng.");
-
-        cart = [];
-
-    }
-
-}
-
-// =====================================================
-// KẾT THÚC BLOCK 03 - PHẦN C
-// =====================================================
-
-// =====================================================
-// KẾT THÚC BLOCK 03 - PHẦN A
-// =====================================================
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.4A
-   Block   : 04
-   Chức năng :
-   JavaScript Mở / Đóng Popup Thanh toán
-
-   Ghi chú :
-   - Chỉ xử lý mở / đóng Popup.
-   - Không xử lý dữ liệu.
-   - Không gửi Zalo.
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btnOpen = document.getElementById("btnOpenPaymentPopup");
-
-    const btnClose = document.getElementById("closePaymentPopup");
-
-    const paymentOverlay = document.getElementById("paymentOverlay");
-
-    const paymentPopup = document.getElementById("paymentPopup");
-
-    const cartPopup = document.getElementById("cart-popup");
-
-    /* ==========================
-       Mở Popup Thanh toán
-    ========================== */
-
-    if (btnOpen) {
-
-        btnOpen.addEventListener("click", function () {
-
-            if (cartPopup) {
-
-                cartPopup.style.display = "none";
-
-            }
-
-            paymentOverlay.style.display = "flex";
-
-        });
-
-    }
-
-    /* ==========================
-       Đóng bằng nút X
-    ========================== */
-
-    if (btnClose) {
-
-        btnClose.addEventListener("click", closePaymentPopup);
-
-    }
-
-    /* ==========================
-       Đóng khi bấm nền tối
-    ========================== */
-
-    paymentOverlay.addEventListener("click", function (event) {
-
-        if (event.target === paymentOverlay) {
-
-            closePaymentPopup();
-
-        }
-
-    });
-
-    /* ==========================
-       Không đóng khi bấm Popup
-    ========================== */
-
-    paymentPopup.addEventListener("click", function (event) {
-
-        event.stopPropagation();
-
-    });
-
-    /* ==========================
-       Đóng bằng ESC
-    ========================== */
-
-    document.addEventListener("keydown", function (event) {
-
-        if (event.key === "Escape") {
-
-            closePaymentPopup();
-
-        }
-
-    });
-
-    /* ==========================
-       Hàm đóng Popup
-    ========================== */
-
-    function closePaymentPopup() {
-
-        paymentOverlay.style.display = "none";
-
-    }
-
-});
-
-/* ===== Kết thúc Block 3.0.4A-04 ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.4A
-   Block   : 05
-   Chức năng :
-   Đồng bộ dữ liệu Giỏ hàng sang Popup Thanh toán
-
-   Ghi chú :
-   - Không sửa Block cũ.
-   - Chỉ đọc dữ liệu từ mảng cart.
-   - Chỉ cập nhật Popup Thanh toán.
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btnPayment = document.getElementById("btnOpenPaymentPopup");
-
-    const paymentOrderList =
-        document.getElementById("paymentOrderList");
-
-    const paymentTotalPrice =
-        document.getElementById("paymentTotalPrice");
-
-    if (!btnPayment) {
-
-        return;
-
-    }
-
-    btnPayment.addEventListener("click", function () {
-
-        updatePaymentPopup();
-
-    });
-
-    function updatePaymentPopup() {
-
-        if (!paymentOrderList || !paymentTotalPrice) {
-
-            return;
-
-        }
-
-        // -----------------------------
-        // Không có sản phẩm
-        // -----------------------------
-
-        if (cart.length === 0) {
-
-            paymentOrderList.innerHTML = `
-                <p style="text-align:center;color:#888;">
-                    Chưa có sản phẩm.
-                </p>
-            `;
-
-            paymentTotalPrice.textContent = "0đ";
-
-            return;
-
-        }
-
-        // -----------------------------
-        // Tạo danh sách đơn hàng
-        // -----------------------------
-
-        let html = "";
-
-        let total = 0;
-
-        cart.forEach(function(item){
-
-            const money = item.price * item.quantity;
-
-            total += money;
-
-            html += `
-                <div class="payment-item">
-
-                    <div>
-
-                        <strong>${item.product}</strong>
-
-                    </div>
-
-                    <div>
-
-                        SL: ${item.quantity}
-
-                    </div>
-
-                    <div>
-
-                        ${money.toLocaleString()}đ
-
-                    </div>
-
-                    <hr>
-
-                </div>
-            `;
-
-        });
-
-       paymentOrderList.innerHTML = html;
-
-paymentTotalPrice.textContent =
-    total.toLocaleString() + "đ";
-
-    }   // Đóng hàm updatePaymentPopup()
-
-});     // Đóng DOMContentLoaded
-
-/* ===== Kết thúc Block 3.0.4A-05 ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.4A
-   Block   : 06
-   Chức năng :
-   Kiểm tra thông tin khách hàng
-   và Gửi đơn qua Zalo
-
-   Ghi chú :
-   - Không sửa Block cũ.
-   - Chỉ bổ sung JavaScript.
-================================================== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 03
-   Chức năng :
-   Hiển thị Popup Thành công
-
-   Ghi chú :
-   - Không sửa Block cũ.
-   - Chỉ hiển thị Popup Thành công.
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btnSendOrder =
-        document.getElementById("btnSendZaloOrder");
-
-    const paymentOverlay =
-        document.getElementById("paymentOverlay");
-
-    const successOverlay =
-        document.getElementById("successOverlay");
-
-    if (!btnSendOrder || !paymentOverlay || !successOverlay) {
-
-        return;
-
-    }
-
-    btnSendOrder.addEventListener("click", function () {
-
-        // Đóng Popup Thanh toán
-        paymentOverlay.style.display = "none";
-
-        // Hiện Popup Thành công
-        successOverlay.style.display = "flex";
-
-    });
-
-});
-
-/* ===== Kết thúc Block 3.0.5-03 ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 04
-   Chức năng :
-   Dọn dẹp hệ thống sau khi đặt hàng
-
-   Ghi chú :
-   - Không sửa Block cũ.
-   - Chỉ chạy khi bấm "Hoàn tất".
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btnDone = document.getElementById("btnSuccessDone");
-    const successOverlay = document.getElementById("successOverlay");
-
-    if (!btnDone || !successOverlay) {
-        return;
-    }
-
-    btnDone.addEventListener("click", function () {
-
-        // Ẩn Popup thành công
-        successOverlay.style.display = "none";
-
-        // Xóa dữ liệu giỏ hàng
-        cart = [];
-
-        // Xóa Local Storage
-        localStorage.removeItem("cafePhoXuaCart");
-
-        // Cập nhật lại giao diện giỏ hàng
-        refreshCart();
-
-        // Xóa dữ liệu Form
-        const ids = [
-            "customerName",
-            "customerPhone",
-            "customerAddress",
-            "customerNote"
-        ];
-
-        ids.forEach(function (id) {
-
-            const input = document.getElementById(id);
-
-            if (input) {
-                input.value = "";
-                input.style.borderColor = "";
-            }
-
-        });
-
-    });
-
-});
-
-/* ===== Kết thúc Block 3.0.5-04 ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 05A
-   Module  : Sinh mã đơn hàng
-
-   Chức năng:
-   - Tạo mã đơn hàng duy nhất.
-   - Không phụ thuộc giao diện.
-   - Không phụ thuộc Zalo.
-================================================== */
-
-function generateOrderCode() {
-
-    const now = new Date();
-
-    const year = now.getFullYear();
-
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-
-    const day = String(now.getDate()).padStart(2, "0");
-
-    const hour = String(now.getHours()).padStart(2, "0");
-
-    const minute = String(now.getMinutes()).padStart(2, "0");
-
-    const second = String(now.getSeconds()).padStart(2, "0");
-
-    return `CPX-${year}${month}${day}-${hour}${minute}${second}`;
-
-}
-
-/* ===== Kết thúc Block 3.0.5-05A ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 05B
-   Module  : Thời gian đặt hàng
-
-   Chức năng:
-   - Sinh thời gian hiện tại.
-   - Định dạng: DD/MM/YYYY HH:MM:SS
-   - Không phụ thuộc giao diện.
-================================================== */
-
-function generateOrderTime() {
-
-    const now = new Date();
-
-    const day = String(now.getDate()).padStart(2, "0");
-
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-
-    const year = now.getFullYear();
-
-    const hour = String(now.getHours()).padStart(2, "0");
-
-    const minute = String(now.getMinutes()).padStart(2, "0");
-
-    const second = String(now.getSeconds()).padStart(2, "0");
-
-    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
-
-}
-
-/* ===== Kết thúc Block 3.0.5-05B ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 05C
-   Module  : Thu thập dữ liệu đơn hàng
-
-   Chức năng:
-   - Đọc dữ liệu từ cart.
-   - Tính tổng số món.
-   - Tính tổng tiền.
-   - Trả về object dùng cho các Module tiếp theo.
-================================================== */
-
-function collectOrderData() {
-
-    let totalItems = 0;
-    let totalPrice = 0;
-
-    const items = [];
-
-    cart.forEach(function(item) {
-
-        const quantity = Number(item.quantity) || 0;
-        const price = Number(item.price) || 0;
-
-        totalItems += quantity;
-
-        const money = quantity * price;
-
-        totalPrice += money;
-
-        items.push({
-
-            product: item.product,
-
-            quantity: quantity,
-
-            price: price,
-
-            money: money
-
-        });
-
-    });
-
-    return {
-
-        items: items,
-
-        totalItems: totalItems,
-
-        totalPrice: totalPrice
-
+    const MENU_URL = "src/data/menu.json";
+    const CART_STORAGE_KEY = "cart";
+    const IMAGE_FALLBACK = "images/coffee-01.webp";
+
+    const $ = (id) => document.getElementById(id);
+
+    const els = {
+        menuGrid: document.querySelector(".menu-grid"),
+        cartIcon: $("cart-icon"),
+        cartPopup: $("cart-popup"),
+        cartItems: $("cart-items"),
+        cartCount: $("cart-count"),
+        cartTotal: $("cart-total"),
+        closeCart: $("close-cart"),
+        paymentOverlay: $("paymentOverlay"),
+        paymentOrderList: $("paymentOrderList"),
+        paymentTotalPrice: $("paymentTotalPrice"),
+        openPayment: $("btnOpenPaymentPopup"),
+        closePayment: $("closePaymentPopup"),
+        continueShopping: $("btnContinueShopping"),
+        sendZalo: $("btnSendZaloOrder"),
+        successOverlay: $("successOverlay"),
+        successDone: $("btnSuccessDone")
     };
 
-}
+    let menuItems = [];
 
-/* ===== Kết thúc Block 3.0.5-05C ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 05D
-   Module  : Ghép nội dung tin nhắn
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
 
-   Chức năng:
-   - Ghép toàn bộ nội dung đơn hàng.
-   - Trả về chuỗi (string).
-================================================== */
+    function formatPrice(value) {
+        if (value === null || value === undefined || value === "") {
+            return "Giá đang cập nhật";
+        }
 
-function buildOrderMessage() {
+        const number = Number(value);
+        if (!Number.isFinite(number) || number <= 0) {
+            return "Giá đang cập nhật";
+        }
 
-    const orderCode = generateOrderCode();
+        return number.toLocaleString("vi-VN") + "đ";
+    }
 
-    const orderTime = generateOrderTime();
+    function syncCoreState() {
+        App.state.cart = Cart.getItems();
+        App.state.menu = menuItems.slice();
+        App.state.categories = [...new Set(menuItems.map(item => item.category))];
+    }
 
-    const orderData = collectOrderData();
+    function saveCart() {
+        App.storage.set(CART_STORAGE_KEY, Cart.getItems());
+    }
 
-    let message = "";
+    function loadCart() {
+        const saved = App.storage.get(CART_STORAGE_KEY, []);
 
-    message += "☕ CAFE PHỐ XƯA\n\n";
+        if (!Array.isArray(saved) || saved.length === 0) {
+            return;
+        }
 
-    message += "🧾 Mã đơn: " + orderCode + "\n";
+        const normalized = saved
+            .map(item => {
+                const source = menuItems.find(menu =>
+                    menu.id === item.id ||
+                    menu.name === item.name ||
+                    menu.name === item.product
+                );
 
-    message += "🕒 Thời gian: " + orderTime + "\n\n";
+                if (!source) return null;
 
-    message += "━━━━━━━━━━━━━━\n\n";
+                return {
+                    id: source.id,
+                    name: source.name,
+                    price: source.price ?? (Number(item.price) || 0),
+                    quantity: Math.max(1, Number(item.quantity) || 1),
+                    note: item.note || "",
+                    sugar: item.sugar ?? 100,
+                    ice: item.ice ?? 100,
+                    toppings: item.toppings || []
+                };
+            })
+            .filter(Boolean);
 
-    message += "🛒 DANH SÁCH MÓN\n\n";
+        Cart.clearCart();
+        Cart.addItems(normalized);
+    }
 
-    orderData.items.forEach(function(item, index){
+    function findCartItem(productId) {
+        return Cart.getItem(productId);
+    }
 
-        message += (index + 1) + ". " + item.product + "\n";
+    function addProduct(productId) {
+        const product = menuItems.find(item => item.id === productId);
+        if (!product || product.price === null) {
+            return;
+        }
 
-        message += "SL: " + item.quantity + "\n";
+        const existing = findCartItem(product.id);
 
-        message += "Thành tiền: "
-            + item.money.toLocaleString("vi-VN")
-            + "đ\n\n";
+        if (existing) {
+            Cart.increaseQuantity(existing.id);
+        } else {
+            Cart.addItem({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1
+            });
+        }
 
-    });
+        pulseCart();
+    }
 
-    message += "━━━━━━━━━━━━━━\n\n";
+    function increaseProduct(id) {
+        Cart.increaseQuantity(id);
+    }
 
-    message += "📦 Tổng số món: "
-        + orderData.totalItems + "\n";
+    function decreaseProduct(id) {
+        const item = Cart.getItem(id);
+        if (!item) return;
 
-    message += "💰 Tổng thanh toán: "
-        + orderData.totalPrice.toLocaleString("vi-VN")
-        + "đ\n\n";
+        if (item.quantity <= 1) {
+            Cart.removeItem(id);
+        } else {
+            Cart.decreaseQuantity(id);
+        }
+    }
 
-    message += "━━━━━━━━━━━━━━\n\n";
+    function pulseCart() {
+        if (!els.cartIcon) return;
+        els.cartIcon.classList.add("cart-bounce");
+        window.setTimeout(() => {
+            els.cartIcon.classList.remove("cart-bounce");
+        }, 400);
+    }
 
-    message += "👤 Khách hàng:\n";
-    message += document.getElementById("customerName").value + "\n\n";
+    function renderMenu() {
+        if (!els.menuGrid) return;
 
-    message += "📞 Điện thoại:\n";
-    message += document.getElementById("customerPhone").value + "\n\n";
+        if (menuItems.length === 0) {
+            els.menuGrid.innerHTML = "<p>Chưa có dữ liệu thực đơn.</p>";
+            return;
+        }
 
-    message += "📍 Địa chỉ:\n";
-    message += document.getElementById("customerAddress").value + "\n\n";
+        els.menuGrid.innerHTML = menuItems.map(item => {
+            const hasPrice = Number.isFinite(Number(item.price)) && Number(item.price) > 0;
+            const button = hasPrice
+                ? `<a href="#" class="menu-order-btn" data-product-id="${escapeHtml(item.id)}">☕ Đặt ngay</a>`
+                : `<span class="menu-order-btn" aria-disabled="true" style="opacity:.6;cursor:not-allowed;">Đang cập nhật giá</span>`;
 
-    message += "📝 Ghi chú:\n";
-    message += document.getElementById("customerNote").value + "\n\n";
+            return `
+                <article class="menu-card" data-category="${escapeHtml(item.category)}">
+                    <img src="${escapeHtml(item.image || IMAGE_FALLBACK)}"
+                         alt="${escapeHtml(item.name)}"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='${IMAGE_FALLBACK}'">
+                    <h3>${escapeHtml(item.name)}</h3>
+                    <p>${escapeHtml(item.description)}</p>
+                    <span class="price">${formatPrice(item.price)}</span>
+                    ${button}
+                </article>
+            `;
+        }).join("");
+    }
 
-    message += "━━━━━━━━━━━━━━\n\n";
+    function renderCart() {
+        if (!els.cartItems || !els.cartCount || !els.cartTotal) return;
 
-    message += "❤️ Xin cảm ơn Quý khách đã lựa chọn\n";
+        const items = Cart.getItems();
+        const summary = Cart.getSummary();
 
-    message += "Cafe Phố Xưa.";
+        els.cartCount.textContent = summary.itemCount;
+        els.cartTotal.textContent = "Tổng tiền: " + formatPrice(summary.total);
 
-    return message;
+        if (items.length === 0) {
+            els.cartItems.innerHTML = '<p style="text-align:center;padding:20px;">Chưa có sản phẩm.</p>';
+            return;
+        }
 
-}
+        els.cartItems.innerHTML = items.map(item => `
+            <div class="cart-item" data-cart-id="${escapeHtml(item.id)}">
+                <strong>${escapeHtml(item.name)}</strong>
+                <div class="cart-qty">
+                    <button type="button" class="minus-btn" data-cart-id="${escapeHtml(item.id)}">−</button>
+                    <span>${item.quantity}</span>
+                    <button type="button" class="plus-btn" data-cart-id="${escapeHtml(item.id)}">+</button>
+                </div>
+                <div>${formatPrice(item.price * item.quantity)}</div>
+            </div>
+            <hr>
+        `).join("");
+    }
 
-/* ===== Kết thúc Block 3.0.5-05D ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 05E
-   Module  : Gửi đơn hàng sang Zalo
+    function renderPayment() {
+        if (!els.paymentOrderList || !els.paymentTotalPrice) return;
 
-   Chức năng:
-   - Lấy nội dung từ buildOrderMessage()
-   - Mã hóa URL
-   - Mở Zalo
-================================================== */
+        const items = Cart.getItems();
+        const summary = Cart.getSummary();
 
-function openOrderOnZalo() {
+        if (items.length === 0) {
+            els.paymentOrderList.innerHTML = '<p style="text-align:center;color:#888;">Chưa có sản phẩm.</p>';
+            els.paymentTotalPrice.textContent = "0đ";
+            return;
+        }
 
-    const zaloNumber = "0868708799";
+        els.paymentOrderList.innerHTML = items.map(item => `
+            <div class="payment-item">
+                <strong>${escapeHtml(item.name)}</strong>
+                <div>SL: ${item.quantity}</div>
+                <div>${formatPrice(item.price * item.quantity)}</div>
+                <hr>
+            </div>
+        `).join("");
 
-    const message = buildOrderMessage();
+        els.paymentTotalPrice.textContent = formatPrice(summary.total);
+    }
 
-    const encodedMessage = encodeURIComponent(message);
+    function openCart() {
+        if (els.cartPopup) els.cartPopup.style.display = "flex";
+    }
 
-    const zaloUrl =
-        "https://zalo.me/" +
-        zaloNumber +
-        "?text=" +
-        encodedMessage;
+    function closeCart() {
+        if (els.cartPopup) els.cartPopup.style.display = "none";
+    }
 
-    window.open(zaloUrl, "_blank");
+    function openPayment() {
+        if (Cart.isEmpty()) {
+            openCart();
+            return;
+        }
 
-}
+        closeCart();
+        renderPayment();
+        if (els.paymentOverlay) els.paymentOverlay.style.display = "flex";
+    }
 
-/* ===== Kết thúc Block 3.0.5-05E ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 06
-   Chức năng:
-   - Tích hợp hệ thống gửi đơn mới.
-   - Gắn nút "Gửi đơn qua Zalo" với Module 05E.
-   - Không sửa các Block đã khóa.
-================================================== */
+    function closePayment() {
+        if (els.paymentOverlay) els.paymentOverlay.style.display = "none";
+    }
 
-document.addEventListener("DOMContentLoaded", function () {
+    function showSuccess() {
+        closePayment();
+        if (els.successOverlay) els.successOverlay.style.display = "flex";
+    }
 
-    const sendButton = document.getElementById("btnSendZaloOrder");
+    async function loadMenu() {
+        try {
+            const response = await fetch(MENU_URL, { cache: "no-store" });
+            if (!response.ok) throw new Error("HTTP " + response.status);
 
-    if (!sendButton) return;
+            const data = await response.json();
+            menuItems = Array.isArray(data.items) ? data.items : [];
 
-    sendButton.addEventListener("click", function (event) {
+            renderMenu();
+            loadCart();
+            syncCoreState();
+            renderCart();
+        } catch (error) {
+            console.error("[CafePhoXua.UI] Không tải được menu:", error);
+            if (els.menuGrid) {
+                els.menuGrid.innerHTML = '<p>Không thể tải thực đơn. Vui lòng thử lại.</p>';
+            }
+        }
+    }
 
-        event.preventDefault();
-
-        openOrderOnZalo();
-
-    });
-
-});
-
-/* ===== Kết thúc Block 3.0.5-06 ===== */
-/* ==================================================
-   Cafe Phố Xưa
-   Version : 3.0.5
-   Block   : 07
-   Chức năng:
-   Điều phối hệ thống gửi đơn
-
-   Ghi chú:
-   - Không sửa Block cũ.
-   - Chỉ cho phép Module mới chịu trách nhiệm gửi.
-================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const btn = document.getElementById("btnSendZaloOrder");
-
-    if (!btn) return;
-
-    // Clone nút để loại bỏ toàn bộ EventListener cũ
-    const newBtn = btn.cloneNode(true);
-
-    btn.parentNode.replaceChild(newBtn, btn);
-
-    // Chỉ còn EventListener mới
-    newBtn.addEventListener("click", function (event) {
-
-        event.preventDefault();
-
-        // Kiểm tra thông tin bắt buộc
-        const fullName = document.getElementById("customerName");
-        const phone = document.getElementById("customerPhone");
-        const address = document.getElementById("customerAddress");
-
-        [fullName, phone, address].forEach(function (input) {
-            input.style.borderColor = "";
+    function bindEvents() {
+        els.cartIcon?.addEventListener("click", openCart);
+        els.closeCart?.addEventListener("click", closeCart);
+        els.openPayment?.addEventListener("click", openPayment);
+        els.closePayment?.addEventListener("click", closePayment);
+        els.continueShopping?.addEventListener("click", closePayment);
+        els.successDone?.addEventListener("click", () => {
+            if (els.successOverlay) els.successOverlay.style.display = "none";
         });
 
-        if (fullName.value.trim() === "") {
-            alert("Vui lòng nhập họ và tên.");
-            fullName.style.borderColor = "red";
-            fullName.focus();
-            return;
-        }
+        els.cartPopup?.addEventListener("click", event => {
+            if (event.target === els.cartPopup) closeCart();
+        });
 
-        if (phone.value.trim() === "") {
-            alert("Vui lòng nhập số điện thoại.");
-            phone.style.borderColor = "red";
-            phone.focus();
-            return;
-        }
+        els.paymentOverlay?.addEventListener("click", event => {
+            if (event.target === els.paymentOverlay) closePayment();
+        });
 
-        if (address.value.trim() === "") {
-            alert("Vui lòng nhập địa chỉ giao hàng.");
-            address.style.borderColor = "red";
-            address.focus();
-            return;
-        }
+        document.addEventListener("click", event => {
+            const orderButton = event.target.closest(".menu-order-btn[data-product-id]");
+            if (orderButton) {
+                event.preventDefault();
+                addProduct(orderButton.dataset.productId);
+                return;
+            }
 
-        // Gửi bằng hệ thống mới
-        openOrderOnZalo();
+            const plusButton = event.target.closest(".plus-btn[data-cart-id]");
+            if (plusButton) {
+                increaseProduct(plusButton.dataset.cartId);
+                return;
+            }
 
-        // Hiển thị popup thành công
-        const paymentOverlay = document.getElementById("paymentOverlay");
-        const successOverlay = document.getElementById("successOverlay");
+            const minusButton = event.target.closest(".minus-btn[data-cart-id]");
+            if (minusButton) {
+                decreaseProduct(minusButton.dataset.cartId);
+            }
+        });
 
-        if (paymentOverlay) {
-            paymentOverlay.style.display = "none";
-        }
+        document.addEventListener("keydown", event => {
+            if (event.key !== "Escape") return;
+            closeCart();
+            closePayment();
+        });
 
-        if (successOverlay) {
-            successOverlay.style.display = "flex";
-        }
+        els.sendZalo?.addEventListener("click", () => {
+            if (Cart.isEmpty()) return;
 
+            const sent = window.CafePhoXuaCheckout?.Actions?.sendOrder();
+            if (sent) showSuccess();
+        });
+
+        Cart.on("cart:change", () => {
+            syncCoreState();
+            saveCart();
+            renderCart();
+            renderPayment();
+        });
+    }
+
+    bindEvents();
+    loadMenu();
+
+    window.CafePhoXuaUI = Object.freeze({
+        addProduct,
+        renderMenu,
+        renderCart,
+        renderPayment,
+        openCart,
+        closeCart,
+        openPayment,
+        closePayment
     });
-
-});
-
-/* ===== Kết thúc Block 3.0.5-07 ===== */
+})(window, document);

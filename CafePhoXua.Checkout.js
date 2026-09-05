@@ -1,261 +1,99 @@
-/**
+/*!
  * =====================================================
- * Cafe Phố Xưa - Checkout Module
- * -----------------------------------------------------
- * Chịu trách nhiệm điều phối toàn bộ quy trình
- * đặt hàng của khách.
+ * CafePhoXua.Checkout.js
+ * =====================================================
+ * CafePhoXua V8 Stable - Checkout Coordinator
  *
- * Chức năng:
- * - Thu thập dữ liệu đơn hàng
- * - Gọi OrderBuilder
- * - Gọi Zalo Connector
- * - Hiển thị trạng thái đặt hàng
- * - Reset sau khi hoàn tất
+ * Responsibilities:
+ * - Collect customer data
+ * - Read the V8 Cart
+ * - Build the order
+ * - Delegate message creation to OrderBuilder
+ * - Delegate sending to Zalo
  *
- * Không xử lý:
- * - Render giao diện
- * - Quản lý giỏ hàng
- * - Tạo nội dung đơn hàng
- * - Tạo URL Zalo
+ * Does not:
+ * - Render UI
+ * - Manage cart state
+ * - Build HTML
  * =====================================================
  */
+(function (window) {
+    "use strict";
 
-const CafePhoXuaCheckout = {};
-/**
- * =====================================================
- * Utilities
- * -----------------------------------------------------
- * Chứa các hàm tiện ích dùng trong Checkout.
- * =====================================================
- */
-
-CafePhoXuaCheckout.Utils = {};
-
-/**
- * =====================================================
- * Builder
- * -----------------------------------------------------
- * Chịu trách nhiệm xây dựng dữ liệu Checkout.
- * =====================================================
- */
-
-CafePhoXuaCheckout.Builder = {};
-
-/**
- * =====================================================
- * Actions
- * -----------------------------------------------------
- * Chứa các nghiệp vụ chính của Checkout.
- * =====================================================
- */
-
-CafePhoXuaCheckout.Actions = {};
-
-/**
- * =====================================================
- * Events
- * -----------------------------------------------------
- * Quản lý các sự kiện của Checkout.
- * =====================================================
- */
-
-CafePhoXuaCheckout.Events = {};
-/**
- * =====================================================
- * Build Customer
- * -----------------------------------------------------
- * Thu thập thông tin khách hàng từ form thanh toán.
- *
- * Trả về:
- * {
- *     name,
- *     phone,
- *     address,
- *     note
- * }
- * =====================================================
- */
-
-CafePhoXuaCheckout.Builder.buildCustomer = function () {
-
-    const name =
-    document.getElementById("customerName")?.value?.trim() || "";
-
-const phone =
-    document.getElementById("customerPhone")?.value?.trim() || "";
-
-const address =
-    document.getElementById("customerAddress")?.value?.trim() || "";
-
-const note =
-    document.getElementById("customerNote")?.value?.trim() || "";
-
-    return {
-
-        name,
-
-        phone,
-
-        address,
-
-        note
-
-    };
-
-};
-/**
- * =====================================================
- * Build Order
- * -----------------------------------------------------
- * Xây dựng đối tượng đơn hàng hoàn chỉnh.
- *
- * Tham số:
- * - customer
- * - items
- * - total
- *
- * Trả về:
- * {
- *     customer,
- *     items,
- *     total
- * }
- * =====================================================
- */
-
-CafePhoXuaCheckout.Builder.buildOrder = function (
-    customer,
-    items,
-    total
-) {
-
-    customer = customer || {};
-
-    items = Array.isArray(items) ? items : [];
-
-    total = Number(total);
-
-    if (Number.isNaN(total)) {
-        total = 0;
+    if (!window.CafePhoXua) {
+        throw new Error("[CafePhoXua.Checkout] Core chưa được tải.");
     }
 
-    return {
+    const Core = window.CafePhoXua;
 
-        customer,
-
-        items,
-
-        total
-
-    };
-
-};
-/**
- * =====================================================
- * Collect Order
- * -----------------------------------------------------
- * Thu thập toàn bộ dữ liệu đơn hàng.
- *
- * Trả về:
- * {
- *     customer,
- *     items,
- *     total
- * }
- * =====================================================
- */
-
-CafePhoXuaCheckout.Actions.collectOrder = function () {
-
-    const customer =
-        CafePhoXuaCheckout.Builder.buildCustomer();
-
-    const items = Array.isArray(CafePhoXuaCart.items)
-        ? [...CafePhoXuaCart.items]
-        : [];
-
-    const total = Number(CafePhoXuaCart.total) || 0;
-
-    return CafePhoXuaCheckout.Builder.buildOrder(
-
-        customer,
-
-        items,
-
-        total
-
-    );
-
-};
-/**
- * =====================================================
- * Send Order
- * -----------------------------------------------------
- * Điều phối toàn bộ quy trình gửi đơn hàng.
- *
- * Quy trình:
- * 1. Thu thập dữ liệu đơn hàng
- * 2. Tạo nội dung đơn hàng
- * 3. Gửi sang Zalo
- *
- * Trả về:
- * true  - Gửi thành công
- * false - Gửi thất bại
- * =====================================================
- */
-
-CafePhoXuaCheckout.Actions.sendOrder = function () {
-
-    const order =
-        CafePhoXuaCheckout.Actions.collectOrder();
-
-    const message =
-        CafePhoXuaOrderBuilder.Builder.buildOrderMessage(order);
-
-    return CafePhoXuaZalo.send(message);
-
-};
-/**
- * =====================================================
- * Bind Send Button
- * -----------------------------------------------------
- * Gắn sự kiện cho nút "Gửi đơn qua Zalo".
- *
- * Khi người dùng nhấn nút:
- * - Gọi Checkout.Actions.sendOrder()
- * =====================================================
- */
-
-CafePhoXuaCheckout.Events.bindSendButton = function () {
-
-    const button = document.getElementById("btnSendZaloOrder");
-
-    if (!button) {
-        return false;
+    if (!Core.Cart) {
+        throw new Error("[CafePhoXua.Checkout] Cart Engine chưa được tải.");
     }
 
-    button.addEventListener("click", function () {
+    if (!window.CafePhoXuaOrderBuilder) {
+        throw new Error("[CafePhoXua.Checkout] OrderBuilder chưa được tải.");
+    }
 
-        CafePhoXuaCheckout.Actions.sendOrder();
+    if (!window.CafePhoXuaZalo) {
+        throw new Error("[CafePhoXua.Checkout] Zalo Connector chưa được tải.");
+    }
 
-    });
+    const Checkout = window.CafePhoXuaCheckout || {};
+    Checkout.Utils = Checkout.Utils || {};
+    Checkout.Builder = Checkout.Builder || {};
+    Checkout.Actions = Checkout.Actions || {};
 
-    return true;
+    Checkout.Utils.getFieldValue = function (id) {
+        return document.getElementById(id)?.value?.trim() || "";
+    };
 
-};
-/**
- * =====================================================
- * Initialize Checkout
- * -----------------------------------------------------
- * Khởi tạo toàn bộ Checkout Module.
- *
- * Chức năng:
- * - Gắn các sự kiện của Checkout
- * =====================================================
- */
+    Checkout.Builder.buildCustomer = function () {
+        return {
+            name: Checkout.Utils.getFieldValue("customerName"),
+            phone: Checkout.Utils.getFieldValue("customerPhone"),
+            address: Checkout.Utils.getFieldValue("customerAddress"),
+            note: Checkout.Utils.getFieldValue("customerNote")
+        };
+    };
 
-CafePhoXuaCheckout.init = function () {
+    Checkout.Builder.buildOrder = function (customer) {
+        const summary = Core.Cart.getSummary();
 
-    CafePhoXuaCheckout.Events.bindSendButton();
+        return {
+            customer: customer || {},
+            items: Core.Cart.getItems(),
+            total: summary.total
+        };
+    };
 
-};
+    Checkout.Actions.collectOrder = function () {
+        const order = Checkout.Builder.buildOrder(
+            Checkout.Builder.buildCustomer()
+        );
+
+        if (order.items.length === 0) {
+            return null;
+        }
+
+        return order;
+    };
+
+    Checkout.Actions.sendOrder = function () {
+        const order = Checkout.Actions.collectOrder();
+
+        if (!order) {
+            return false;
+        }
+
+        const message =
+            window.CafePhoXuaOrderBuilder.buildOrderMessage(order);
+
+        return window.CafePhoXuaZalo.send(message);
+    };
+
+    Checkout.Actions.getSummary = function () {
+        return Core.Cart.getSummary();
+    };
+
+    window.CafePhoXuaCheckout = Checkout;
+})(window);
