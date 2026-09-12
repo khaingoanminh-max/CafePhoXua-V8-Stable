@@ -1,0 +1,19 @@
+{
+  "name": "Cafe Phố Xưa",
+  "short_name": "Phố Xưa",
+  "description": "Cafe Phố Xưa tại Giá Rai - 42 thức uống, đặt giao tận nơi qua Zalo 0868708799.",
+  "lang": "vi",
+  "start_url": "/CafePhoXua-V8-Stable/",
+  "scope": "/CafePhoXua-V8-Stable/",
+  "display": "standalone",
+  "background_color": "#fffaf5",
+  "theme_color": "#6f451f",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
