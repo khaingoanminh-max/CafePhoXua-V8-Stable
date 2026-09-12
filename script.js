@@ -35,6 +35,7 @@
   function restoreCart() {
     let items = Core.storage.get(STORAGE_KEY, null);
 
+    // Migration một lần từ cart cũ.
     if (!Array.isArray(items)) {
       try {
         const legacy = JSON.parse(localStorage.getItem('cafePhoXuaCart') || '[]');
@@ -67,6 +68,28 @@
     saveCart();
   }
 
+  function ensureFloatingCart() {
+    let button = $('floatingCartSummary');
+    if (button) return button;
+
+    const style = document.createElement('style');
+    style.id = 'cpx-floating-cart-style';
+    style.textContent = `
+      #floatingCartSummary{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;border:0;border-radius:999px;padding:13px 20px;background:#6f451f;color:#fff;font-weight:800;box-shadow:0 10px 30px rgba(0,0,0,.25);cursor:pointer;white-space:nowrap}
+      #floatingCartSummary:hover{background:#87521f}
+      @media(min-width:769px){#floatingCartSummary{display:none!important}}
+    `;
+    document.head.appendChild(style);
+
+    button = document.createElement('button');
+    button.id = 'floatingCartSummary';
+    button.type = 'button';
+    button.setAttribute('aria-label', 'Mở giỏ hàng');
+    button.addEventListener('click', openCart);
+    document.body.appendChild(button);
+    return button;
+  }
+
   function renderCart() {
     const list = $('cart-items');
     const count = $('cart-count');
@@ -77,6 +100,10 @@
     const summary = Cart.getSummary();
     count.textContent = String(summary.itemCount || 0);
     totalEl.textContent = 'Tổng tiền: ' + money(summary.total);
+
+    const floating = ensureFloatingCart();
+    floating.textContent = `🛒 ${summary.itemCount || 0} món • ${money(summary.total)}`;
+    floating.style.display = summary.itemCount > 0 ? 'block' : 'none';
 
     if (!items.length) {
       list.innerHTML = '<p class="cart-empty" style="text-align:center;padding:20px;">Chưa có sản phẩm.</p>';
