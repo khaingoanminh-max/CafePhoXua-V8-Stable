@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://khaingoanminh-max.github.io/CafePhoXua-V8-Stable/sitemap.xml
