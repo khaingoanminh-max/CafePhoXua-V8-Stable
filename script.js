@@ -1,6 +1,6 @@
 /*!
- * Cafe Phố Xưa V8.5 - Production UI Controller
- * One cart / one checkout / reliable Zalo handoff / remembered customer profile
+ * Cafe Phố Xưa V8.6 - Production UI Controller
+ * Reliable cart / remembered customer / iOS share handoff to Zalo
  */
 (function (window, document) {
   'use strict';
@@ -14,6 +14,7 @@
   const Cart = Core.Cart;
   const CART_KEY = 'cart.v8';
   const CUSTOMER_KEY = 'customer.v1';
+  const LAST_ORDER_KEY = 'lastOrder.v1';
   const ZALO_PHONE = '0868708799';
   const $ = id => document.getElementById(id);
   const money = value => Number(value || 0).toLocaleString('vi-VN') + 'đ';
@@ -87,6 +88,18 @@
     }
   }
 
+  function saveLastOrder(order, message) {
+    try {
+      Core.storage.set(LAST_ORDER_KEY, {
+        order,
+        message,
+        savedAt: Date.now()
+      });
+    } catch (err) {
+      console.warn('[CafePhoXua.UI] Không thể lưu đơn gần nhất.', err);
+    }
+  }
+
   function ensureFloatingCart() {
     let button = $('floatingCartSummary');
     if (button) return button;
@@ -146,7 +159,10 @@
   function closeCart() { const popup = $('cart-popup'); if (popup) popup.style.display = 'none'; }
 
   function openPayment() {
-    if (Cart.isEmpty()) { alert('Giỏ hàng đang trống. Vui lòng chọn ít nhất một món.'); return; }
+    if (Cart.isEmpty()) {
+      alert('Giỏ hàng đang trống. Vui lòng chọn ít nhất một món.');
+      return;
+    }
     restoreCustomerProfile();
     renderPaymentSummary();
     closeCart();
@@ -164,14 +180,21 @@
     for (const [input, message] of fields) {
       if (!input) continue;
       input.style.borderColor = '';
-      if (!input.value.trim()) { alert(message); input.style.borderColor = 'red'; input.focus(); return false; }
+      if (!input.value.trim()) {
+        alert(message);
+        input.style.borderColor = 'red';
+        input.focus();
+        return false;
+      }
     }
     const phone = $('customerPhone');
     if (phone) {
       const normalized = phone.value.replace(/[\s.()-]/g, '');
       if (!/^(?:\+84|0)\d{9}$/.test(normalized)) {
         alert('Số điện thoại chưa đúng định dạng Việt Nam.');
-        phone.style.borderColor = 'red'; phone.focus(); return false;
+        phone.style.borderColor = 'red';
+        phone.focus();
+        return false;
       }
     }
     return true;
@@ -191,49 +214,102 @@
   }
 
   function fallbackOrderMessage(order) {
-    const lines = ['☕ CAFE PHỐ XƯA', '', '🛒 ĐƠN ĐẶT ĐỒ UỐNG', '', `👤 ${order.customer.name}`, `📞 ${order.customer.phone}`, `📍 ${order.customer.address}`, `📝 ${order.customer.note || 'Không có'}`, '', '📋 DANH SÁCH MÓN'];
-    order.items.forEach((item, i) => lines.push(`${i + 1}. ${item.name} — SL: ${item.quantity} — ${money(Number(item.price) * Number(item.quantity))}`));
+    const lines = [
+      '☕ CAFE PHỐ XƯA', '',
+      '🛒 ĐƠN ĐẶT ĐỒ UỐNG', '',
+      `👤 Khách hàng: ${order.customer.name}`,
+      `📞 Điện thoại: ${order.customer.phone}`,
+      `📍 Địa chỉ: ${order.customer.address}`,
+      `📝 Ghi chú: ${order.customer.note || 'Không có'}`, '',
+      '📋 DANH SÁCH MÓN'
+    ];
+    order.items.forEach((item, i) => {
+      lines.push(`${i + 1}. ${item.name}`);
+      lines.push(`   SL: ${item.quantity} × ${money(item.price)}`);
+      lines.push(`   Thành tiền: ${money(Number(item.price) * Number(item.quantity))}`);
+    });
     lines.push('', `💰 TỔNG THANH TOÁN: ${money(order.total)}`, '', '❤️ Cảm ơn Quý khách!');
     return lines.join('\n');
   }
 
   function buildOrderMessage(order) {
     try {
-      if (window.CafePhoXuaOrderBuilder?.buildOrderMessage) return window.CafePhoXuaOrderBuilder.buildOrderMessage(order);
-    } catch (err) { console.warn('[CafePhoXua.UI] OrderBuilder fallback.', err); }
+      if (window.CafePhoXuaOrderBuilder?.buildOrderMessage) {
+        return window.CafePhoXuaOrderBuilder.buildOrderMessage(order);
+      }
+    } catch (err) {
+      console.warn('[CafePhoXua.UI] OrderBuilder fallback.', err);
+    }
     return fallbackOrderMessage(order);
   }
 
-  function copyOrderMessage(message) {
+  async function copyOrderMessage(message) {
     try {
-      if (navigator.clipboard?.writeText) navigator.clipboard.writeText(message).catch(() => {});
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(message);
+        return true;
+      }
     } catch (_) {}
-  }
-
-  function openZalo(message) {
-    const url = `https://zalo.me/${ZALO_PHONE}?text=${encodeURIComponent(message)}`;
-    copyOrderMessage(message);
     try {
-      window.location.assign(url);
-      return true;
-    } catch (err) {
-      console.error('[CafePhoXua.UI] Không thể mở Zalo.', err);
+      const area = document.createElement('textarea');
+      area.value = message;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      return ok;
+    } catch (_) {
       return false;
     }
   }
 
-  function sendOrder() {
-    if (Cart.isEmpty()) { alert('Giỏ hàng đang trống.'); return false; }
+  async function shareOrderToZalo(message) {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Đơn hàng Cafe Phố Xưa',
+          text: message
+        });
+        return { ok: true, mode: 'share' };
+      } catch (err) {
+        if (err && err.name === 'AbortError') {
+          return { ok: false, cancelled: true, mode: 'share' };
+        }
+        console.warn('[CafePhoXua.UI] Web Share không thực hiện được.', err);
+      }
+    }
+
+    const copied = await copyOrderMessage(message);
+    if (copied) {
+      alert('Đơn hàng đã được sao chép. Zalo sẽ mở ngay sau đây. Hãy chọn khung chat Cafe Phố Xưa, Dán và bấm Gửi.');
+    } else {
+      alert('Zalo sẽ được mở. Nếu nội dung chưa có sẵn, vui lòng quay lại website để thử lại.');
+    }
+    window.location.href = `https://zalo.me/${ZALO_PHONE}`;
+    return { ok: true, mode: copied ? 'copy' : 'open' };
+  }
+
+  async function sendOrder() {
+    if (Cart.isEmpty()) {
+      alert('Giỏ hàng đang trống.');
+      return false;
+    }
     if (!validateCustomer()) return false;
+
     const order = buildOrder();
+    const message = buildOrderMessage(order);
+
     saveCustomerProfile(order);
     saveCart();
-    const message = buildOrderMessage(order);
-    const sent = openZalo(message);
-    if (!sent) {
-      alert('Không thể mở Zalo. Nội dung đơn đã được giữ lại, vui lòng thử lại.');
-      return false;
-    }
+    saveLastOrder(order, message);
+
+    const result = await shareOrderToZalo(message);
+    if (!result.ok && result.cancelled) return false;
+
+    closePayment();
     return true;
   }
 
@@ -252,26 +328,53 @@
     $('close-cart')?.addEventListener('click', closeCart);
     $('btnOpenPaymentPopup')?.addEventListener('click', openPayment);
     $('closePaymentPopup')?.addEventListener('click', closePayment);
-    $('btnContinueShopping')?.addEventListener('click', () => { closePayment(); $('menu')?.scrollIntoView({ behavior:'smooth', block:'start' }); });
-    $('btnSendZaloOrder')?.addEventListener('click', event => { event.preventDefault(); sendOrder(); });
+    $('btnContinueShopping')?.addEventListener('click', () => {
+      closePayment();
+      $('menu')?.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+    $('btnSendZaloOrder')?.addEventListener('click', async event => {
+      event.preventDefault();
+      const button = event.currentTarget;
+      const oldText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Đang chuẩn bị đơn...';
+      try {
+        await sendOrder();
+      } finally {
+        button.disabled = false;
+        button.textContent = oldText;
+      }
+    });
     $('btnSuccessDone')?.addEventListener('click', finishOrder);
-    $('cart-popup')?.addEventListener('click', event => { if (event.target === $('cart-popup')) closeCart(); });
-    $('paymentOverlay')?.addEventListener('click', event => { if (event.target === $('paymentOverlay')) closePayment(); });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') { closeCart(); closePayment(); } });
+    $('cart-popup')?.addEventListener('click', event => {
+      if (event.target === $('cart-popup')) closeCart();
+    });
+    $('paymentOverlay')?.addEventListener('click', event => {
+      if (event.target === $('paymentOverlay')) closePayment();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeCart();
+        closePayment();
+      }
+    });
     $('cart-items')?.addEventListener('click', event => {
       const button = event.target.closest('[data-cart-action]');
       if (!button) return;
-      const id = button.dataset.cartId, item = Cart.getItem(id);
+      const id = button.dataset.cartId;
+      const item = Cart.getItem(id);
       if (!item) return;
       if (button.dataset.cartAction === 'plus') Cart.increaseQuantity(id, 1);
-      if (button.dataset.cartAction === 'minus') item.quantity <= 1 ? Cart.removeItem(id) : Cart.decreaseQuantity(id, 1);
+      if (button.dataset.cartAction === 'minus') {
+        item.quantity <= 1 ? Cart.removeItem(id) : Cart.decreaseQuantity(id, 1);
+      }
     });
   }
 
   function loadBranding() {
     if (document.querySelector('script[data-cpx-branding]')) return;
     const s = document.createElement('script');
-    s.src = 'CafePhoXua.Branding.js?v=8.5.0-20260913';
+    s.src = 'CafePhoXua.Branding.js?v=8.6.0-20260913';
     s.dataset.cpxBranding = 'true';
     document.head.appendChild(s);
   }
@@ -281,14 +384,18 @@
     restoreCustomerProfile();
     bindUI();
     Cart.on('cart:change', function () {
-      saveCart(); renderCart();
+      saveCart();
+      renderCart();
       if ($('paymentOverlay')?.style.display === 'flex') renderPaymentSummary();
     });
     renderCart();
     loadBranding();
-    console.log('☕ Cafe Phố Xưa V8.5 UI READY');
+    console.log('☕ Cafe Phố Xưa V8.6 UI READY');
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true });
-  else init();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once:true });
+  } else {
+    init();
+  }
 })(window, document);
