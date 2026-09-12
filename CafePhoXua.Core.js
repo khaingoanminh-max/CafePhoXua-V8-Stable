@@ -287,3 +287,19 @@
     window.CafePhoXua = CafePhoXua;
 
 })(window);
+
+/* ==========================================================
+   FULL MENU LOADER — CafePhoXua V8
+========================================================== */
+(function (document) {
+    'use strict';
+
+    if (document.querySelector('script[data-cafe-menu-v8="true"]')) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'CafePhoXua.Menu.js';
+    script.dataset.cafeMenuV8 = 'true';
+    document.head.appendChild(script);
+})(document);
