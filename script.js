@@ -217,7 +217,7 @@ function loadBranding() {
 function loadLocalSeo() {
   if (document.querySelector('script[data-cpx-local-seo]')) return;
   const script = document.createElement('script');
-  script.src = 'CafePhoXua.LocalSEO.js?v=1.1.0-20260913';
+  script.src = 'CafePhoXua.LocalSEO.js?v=1.2.0-20260913';
   script.dataset.cpxLocalSeo = 'true';
   document.head.appendChild(script);
 }
