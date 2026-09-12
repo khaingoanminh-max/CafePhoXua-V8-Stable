@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Cafe Phố Xưa">
+  <rect width="512" height="512" rx="112" fill="#562b13"/>
+  <circle cx="256" cy="230" r="172" fill="#fff7ed" opacity=".98"/>
+  <path d="M163 190h178v104c0 54-39 96-89 96s-89-42-89-96V190z" fill="#6f451f"/>
+  <path d="M341 222h34c44 0 56 71 11 91-14 6-29 5-45 5" fill="none" stroke="#6f451f" stroke-width="22" stroke-linecap="round"/>
+  <path d="M184 409h145" stroke="#6f451f" stroke-width="22" stroke-linecap="round"/>
+  <path d="M210 153c-24-28 20-43 0-72M265 153c-24-28 20-43 0-72M317 153c-24-28 20-43 0-72" fill="none" stroke="#6f451f" stroke-width="14" stroke-linecap="round"/>
+</svg>
